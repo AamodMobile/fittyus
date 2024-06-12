@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "739101361201",
+    "project_id": "fittyus-app",
+    "storage_bucket": "fittyus-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:739101361201:android:a5e8223c64f563ee550110",
+        "android_client_info": {
+          "package_name": "com.fittyus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARvTRfyZD9bi-0vpSpr3XxruBLnyqpqzI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

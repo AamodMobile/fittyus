@@ -1,0 +1,25 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+const Color mainColor = Colors.black;
+const Color whiteColor = CupertinoColors.white;
+const Color subPrimaryCl = Color(0xFF2B2C2B);
+const Color greenColor = Color(0xFF32D583);
+const Color redColor = Color(0xFFFF4460);
+const Color greenColorTxt = Color(0xFF19B600);
+const Color greyColorTxt = Color(0xFF7B7A7A);
+const Color grayNew = Color.fromRGBO(218, 218, 218, 0.21);
+const Color borderColorCont = Color(0xFFD9D9D9);
+const Color lightGreyTxt = Color(0xFF656363);
+const Color splashBg = Color(0xfff1eded);
+const Color dividerCl = Color(0xffB5B2B2);
+const Color dividerClSec = Color.fromRGBO(181, 178, 178, 1);
+const Color blueCl = Color(0xff163C75);
+const Color lightBlueCl = Color(0xff4F57C6);
+const Color lightGry = Color(0xFFF0F0F0);
+const Color greenWhats = Color(0xFF29A71A);
+const Color bgCommunityItems = Color(0xFFf5f5f5);
+const Color menuContBg = Color(0xFFF8F8F8);
+const Color orange = Color(0xFFFFA825);
+const Color pGreen = Color.fromRGBO(21, 179, 117, 1);
+const Color blueLight = Color.fromRGBO(54, 105, 236, 1);

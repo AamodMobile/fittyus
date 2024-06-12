@@ -1,0 +1,171 @@
+
+url changes in api url file
+
+
+
+old splash screen
+ /* return Scaffold(
+     backgroundColor: splashBg,
+      body: SafeArea(
+        child: Container(
+          margin: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.13),
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: mainColor.withOpacity(0.1),
+                offset: const Offset(0, 4),
+                blurRadius: 20,
+                spreadRadius: 0,
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                splashLogo,
+              )
+            ],
+          ),
+        ),
+      ),
+    );*/
+
+
+    this is code for video player without setState(() {});
+    use but play and pause working issues then i use it later
+    video item controller this make all ready
+
+
+    class VideoPlayerItem extends StatelessWidget {
+      final String videoUrl;
+      final bool isPaused;
+      final int videoId;
+      final VoidCallback? callback;
+
+      const VideoPlayerItem({
+        Key? key,
+        required this.videoUrl,
+        required this.isPaused,
+        required this.videoId,
+        this.callback,
+      }) : super(key: key);
+
+      @override
+      Widget build(BuildContext context) {
+        return Obx(() {
+          final VideoController videoController = Get.find<VideoController>();
+
+          final isLoading = videoController.isLoading.value;
+          final videoInitialized = videoController.videoInitialized.value;
+          final isBuffering = videoController.isBuffering.value;
+          final errorText = videoController.errorText.value;
+
+          return Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration: const BoxDecoration(
+              color: Colors.black,
+            ),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                if (errorText.isNotEmpty)
+                  Center(
+                    child: Text(
+                      errorText,
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  )
+                else if (isLoading)
+                  const Center(
+                    child: CircularProgressIndicator(
+                      color: whiteColor,
+                    ),
+                  )
+                else if (!videoInitialized)
+                  // Display a loading indicator if the video is not initialized yet.
+                  const Center(
+                    child: CircularProgressIndicator(
+                      color: whiteColor,
+                    ),
+                  )
+                else
+                  AspectRatio(
+                    aspectRatio:
+                        videoController.videoPlayerController!.value.aspectRatio,
+                    child: VideoPlayer(videoController.videoPlayerController!),
+                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: Builder(
+                        builder: (context) {
+                          return Icon(
+                            videoController.videoPlayerController!.value.isPlaying
+                                ? Icons.pause
+                                : Icons.play_arrow,
+                          );
+                        },
+                      ),
+                      onPressed: () {
+                        if (videoController
+                            .videoPlayerController!.value.isPlaying) {
+                          videoController.videoPlayerController!.pause();
+                        } else {
+                          videoController.videoPlayerController!.play();
+                        }
+                      },
+                    ),
+                  ],
+                ),
+                Visibility(
+                  visible: isBuffering,
+                  child: Center(
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        children: [
+                          const WidgetSpan(child: CircularProgressIndicator()),
+                          TextSpan(
+                            text: '\n\nLoading.....',
+                            style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                                  color: whiteColor,
+                                  fontSize: Dimensions.font14,
+                                  shadows: [
+                                    const Shadow(
+                                      color: Colors.white,
+                                      offset: Offset(0, 0),
+                                      blurRadius: 30,
+                                    ),
+                                  ],
+                                ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+        );
+      }
+    }
+
+    tab changes community to refer eran, community screen Not use now  but api done on it
+     tab changes category to animation video,category screen not use now but category screen done with api
+
+
+
