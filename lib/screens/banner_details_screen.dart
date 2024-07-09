@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fittyus/constants/constants.dart';
 import 'package:fittyus/model/coupan_list_new.dart';
 import 'package:fittyus/services/api_url.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 class BannerDetailsScreen extends StatefulWidget {
@@ -44,11 +45,15 @@ class _BannerDetailsScreenState extends State<BannerDetailsScreen> {
                 const SizedBox(
                   width: 12,
                 ),
-                Text(
-                  widget.model.title.toString(),
-                  style: TextStyle(color: mainColor, fontFamily: semiBold, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font16),
+                Expanded(
+                  flex: 4,
+                  child: Text(
+                    widget.model.title.toString(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: mainColor, fontFamily: semiBold, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font16),
+                  ),
                 ),
-                const Spacer(),
               ],
             ),
           ),

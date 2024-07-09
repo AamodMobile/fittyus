@@ -187,7 +187,7 @@ class _BlogDetailsScreenState extends State<BlogDetailsScreen> {
                             const SizedBox(
                               height: 10,
                             ),
-                            /*Container(
+                            Container(
                               margin: const EdgeInsets.symmetric(
                                 horizontal: 15,
                               ),
@@ -203,7 +203,7 @@ class _BlogDetailsScreenState extends State<BlogDetailsScreen> {
                                   ),
                                 },
                               ),
-                            ),*/
+                            ),
                             const SizedBox(height: 20),
                           ],
                         );

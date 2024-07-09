@@ -580,7 +580,7 @@ class _EditProfileScreen extends State<EditProfileScreen> {
                                   height: 5,
                                 ),
                                 MyTextFormField(
-                                  controller: controller.address,
+                                  controller: controller.pincode,
                                   hint: "Enter zip code",
                                   fillColor: whiteColor,
                                   obscureText: false,

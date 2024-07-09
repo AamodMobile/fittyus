@@ -127,14 +127,13 @@ class Comment {
   });
 
   factory Comment.fromJson(Map<String, dynamic> json) => Comment(
-    userImage: json["user_image"],
+    userImage: json["user_image"]??"",
     id: json["id"],
     userId: json["user_id"],
     communityId: json["community_id"],
     parentId: json["parent_id"],
     like: json["like"],
     dislike: json["dislike"],
-
     message: json["message"],
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     userName: json["user_name"],

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fittyus/constants/constants.dart';
@@ -34,6 +32,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
       init: Get.find<CommunityController>(),
       initState: (state) {
         Get.find<CommunityController>().getCommunityListApi(true);
+        user.getProfile();
       },
       builder: (contextCtr) {
         return SafeArea(
@@ -81,30 +80,35 @@ class _CommunityScreenState extends State<CommunityScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 9),
                         child: Row(
                           children: [
-                            Container(
-                              height: 30,
-                              width: 30,
-                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: user.user.value.profileImage != ""
-                                    ? CachedNetworkImage(
-                                        errorWidget: (context, url, error) => Image.asset(
+                            InkWell(
+                              onTap: () {
+                                Get.to(() => NewProfileScreen(id: user.user.value.id.toString()));
+                              },
+                              child: Container(
+                                height: 30,
+                                width: 30,
+                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: user.user.value.avatarUrl != ""
+                                      ? CachedNetworkImage(
+                                          errorWidget: (context, url, error) => Image.asset(
+                                            defaultUser,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          fit: BoxFit.cover,
+                                          imageUrl: user.user.value.avatarUrl.toString(),
+                                          placeholder: (a, b) => const Center(
+                                            child: CircularProgressIndicator(
+                                              color: mainColor,
+                                            ),
+                                          ),
+                                        )
+                                      : Image.asset(
                                           defaultUser,
                                           fit: BoxFit.cover,
                                         ),
-                                        fit: BoxFit.cover,
-                                        imageUrl: user.user.value.avatarUrl.toString(),
-                                        placeholder: (a, b) => const Center(
-                                          child: CircularProgressIndicator(
-                                            color: mainColor,
-                                          ),
-                                        ),
-                                      )
-                                    : Image.asset(
-                                        defaultUser,
-                                        fit: BoxFit.cover,
-                                      ),
+                                ),
                               ),
                             ),
                             const SizedBox(width: 8),
@@ -222,9 +226,9 @@ class _CommunityScreenState extends State<CommunityScreen> {
         Get.to(() => CommunityDetails(communityId: list.id.toString()));
       },
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.006),
+        margin: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.006, horizontal: 5),
         padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.01, vertical: MediaQuery.of(context).size.height * 0.01),
-        decoration: BoxDecoration(color: whiteColor, borderRadius: BorderRadius.circular(2)),
+        decoration: BoxDecoration(color: whiteColor, borderRadius: BorderRadius.circular(10), border: Border.all(color: borderColorCont)),
         child: Column(
           children: [
             Padding(
@@ -445,7 +449,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                                             ),
                                           )
                                         : Image.asset(demoImg, height: MediaQuery.of(context).size.height * 0.400, fit: BoxFit.cover))
-                                : SizedBox(),
+                                : const SizedBox(),
                             list.afterImage != "" && list.afterImage != null
                                 ? Expanded(
                                     child: list.afterImage != "" && list.afterImage != null
@@ -461,7 +465,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                                             ),
                                           )
                                         : Image.asset(demoImg, height: MediaQuery.of(context).size.height * 0.400, fit: BoxFit.cover))
-                                : SizedBox(),
+                                : const SizedBox(),
                           ],
                         ),
                         list.userId.toString() == user.user.value.id.toString()
@@ -495,14 +499,54 @@ class _CommunityScreenState extends State<CommunityScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                InkWell(
-                  onTap: () {
-                    controller.communityLike(list.id.toString(), list.isLike.toString() == "0" ? "1" : "0").then((value) {
-                      controller.isLoading.value = true;
-                      controller.getCommunityListApi(true);
-                      controller.isLoading.value = false;
-                    });
-                  },
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      controller.communityLike(list.id.toString(), list.isLike.toString() == "0" ? "1" : "0").then((value) {
+                        controller.isLoading.value = true;
+                        controller.getCommunityListApi(true);
+                        controller.isLoading.value = false;
+                      });
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: whiteColor,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          list.isLike.toString() == "0"
+                              ? Image.asset(
+                                  heartIc,
+                                  height: 16,
+                                  width: 16,
+                                )
+                              : Image.asset(
+                                  heartPinkIc,
+                                  height: 16,
+                                  width: 16,
+                                ),
+                          const SizedBox(width: 4),
+                          Text(
+                            "like ${list.communityCount}",
+                            maxLines: 2,
+                            style: TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              color: mainColor,
+                              fontFamily: regular,
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.normal,
+                              fontSize: Dimensions.font14 - 4,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
@@ -510,21 +554,16 @@ class _CommunityScreenState extends State<CommunityScreen> {
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        list.isLike.toString() == "0"
-                            ? Image.asset(
-                                heartIc,
-                                height: 16,
-                                width: 16,
-                              )
-                            : Image.asset(
-                                heartPinkIc,
-                                height: 16,
-                                width: 16,
-                              ),
+                        Image.asset(
+                          commentNewIc,
+                          height: 16,
+                          width: 16,
+                        ),
                         const SizedBox(width: 4),
                         Text(
-                          "like ${list.communityCount}",
+                          "Comment",
                           maxLines: 2,
                           style: TextStyle(
                             overflow: TextOverflow.ellipsis,
@@ -539,37 +578,8 @@ class _CommunityScreenState extends State<CommunityScreen> {
                     ),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: whiteColor,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        commentNewIc,
-                        height: 16,
-                        width: 16,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        "Comment",
-                        maxLines: 2,
-                        style: TextStyle(
-                          overflow: TextOverflow.ellipsis,
-                          color: mainColor,
-                          fontFamily: regular,
-                          fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.normal,
-                          fontSize: Dimensions.font14 - 4,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
                 Visibility(
-                  visible: true,
+                  visible: false,
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
@@ -602,22 +612,25 @@ class _CommunityScreenState extends State<CommunityScreen> {
                     ),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: whiteColor,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Text(
-                    "200 Views",
-                    maxLines: 2,
-                    style: TextStyle(
-                      overflow: TextOverflow.ellipsis,
-                      color: mainColor,
-                      fontFamily: regular,
-                      fontWeight: FontWeight.w400,
-                      fontStyle: FontStyle.normal,
-                      fontSize: Dimensions.font14 - 4,
+                Visibility(
+                  visible: false,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: whiteColor,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      "200 Views",
+                      maxLines: 2,
+                      style: TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        color: mainColor,
+                        fontFamily: regular,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                        fontSize: Dimensions.font14 - 4,
+                      ),
                     ),
                   ),
                 ),
@@ -716,7 +729,9 @@ class _CommunityScreenState extends State<CommunityScreen> {
                             child: Row(
                               children: [
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    controller.likeComment(list.comments![0].id.toString()).then((value) {});
+                                  },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                                     decoration: BoxDecoration(

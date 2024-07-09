@@ -9,6 +9,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class DashBoardScreen extends StatefulWidget {
   final int index;
+
   const DashBoardScreen({super.key, required this.index});
 
   @override
@@ -27,7 +28,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     NotificationService.initialize(flutterLocalNotificationsPlugin);
     NotificationHelper().initializeNotification();
     controller.selectedIndex.value = widget.index;
-    FirebaseMessaging.instance.getInitialMessage().then((message) {
+    FirebaseMessaging.instance.getInitialMessage().then(
+      (message) {
         Log.console('FirebaseMessaging.instance.getInitialMessage');
         if (message != null) {
           Log.console('New Notification');
@@ -35,7 +37,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       },
     );
 
-    FirebaseMessaging.onMessage.listen((message) {
+    FirebaseMessaging.onMessage.listen(
+      (message) {
         Log.console('FirebaseMessaging.onMessage.listen');
         if (message.notification != null) {
           Log.console(message.notification!.title);
@@ -45,7 +48,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       },
     );
 
-    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+    FirebaseMessaging.onMessageOpenedApp.listen(
+      (message) {
         Log.console("FirebaseMessaging.onMessageOpenedApp.listen");
         if (message.notification != null) {
           Log.console(message.notification!.title);
@@ -80,7 +84,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Obx(() => InkWell(
+            Obx(
+              () => InkWell(
                 onTap: () {
                   controller.selectedIndex.value = 0;
                 },
@@ -90,12 +95,12 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                     ImageIcon(
                       const AssetImage(homeIc),
                       size: 24,
-                      color: controller.selectedIndex.value == 0 ? mainColor : lightGreyTxt,
+                      color: controller.selectedIndex.value == 0 ? pGreen : lightGreyTxt,
                     ),
                     Text(
                       "Home",
                       style: TextStyle(
-                        color: controller.selectedIndex.value == 0 ? mainColor : lightGreyTxt,
+                        color: controller.selectedIndex.value == 0 ? pGreen : lightGreyTxt,
                         fontSize: Dimensions.font14 - 2,
                         fontFamily: semiBold,
                         fontStyle: FontStyle.normal,
@@ -106,7 +111,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                 ),
               ),
             ),
-            Obx(() => InkWell(
+            Obx(
+              () => InkWell(
                 onTap: () {
                   controller.selectedIndex.value = 1;
                 },
@@ -116,12 +122,12 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                     ImageIcon(
                       const AssetImage(accountIc),
                       size: 24,
-                      color: controller.selectedIndex.value == 1 ? mainColor : lightGreyTxt,
+                      color: controller.selectedIndex.value == 1 ? pGreen : lightGreyTxt,
                     ),
                     Text(
                       "Profile",
                       style: TextStyle(
-                        color: controller.selectedIndex.value == 1 ? mainColor : lightGreyTxt,
+                        color: controller.selectedIndex.value == 1 ? pGreen : lightGreyTxt,
                         fontSize: Dimensions.font14 - 2,
                         fontFamily: semiBold,
                         fontStyle: FontStyle.normal,
@@ -132,7 +138,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                 ),
               ),
             ),
-            Obx(() => InkWell(
+            Obx(
+              () => InkWell(
                 onTap: () {
                   controller.selectedIndex.value = 2;
                 },
@@ -142,12 +149,12 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                     ImageIcon(
                       const AssetImage(categoryIc),
                       size: 24,
-                      color: controller.selectedIndex.value == 2 ? mainColor : lightGreyTxt,
+                      color: controller.selectedIndex.value == 2 ? pGreen : lightGreyTxt,
                     ),
                     Text(
                       "Explore Video",
                       style: TextStyle(
-                        color: controller.selectedIndex.value == 2 ? mainColor : lightGreyTxt,
+                        color: controller.selectedIndex.value == 2 ? pGreen : lightGreyTxt,
                         fontSize: Dimensions.font14 - 2,
                         fontFamily: semiBold,
                         fontStyle: FontStyle.normal,
@@ -158,7 +165,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                 ),
               ),
             ),
-            Obx(() => InkWell(
+            Obx(
+              () => InkWell(
                 onTap: () {
                   controller.selectedIndex.value = 3;
                 },
@@ -168,12 +176,12 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                     Icon(
                       Icons.calendar_month_outlined,
                       size: 24,
-                      color: controller.selectedIndex.value == 3 ? mainColor : lightGreyTxt,
+                      color: controller.selectedIndex.value == 3 ? pGreen : lightGreyTxt,
                     ),
                     Text(
                       "Session",
                       style: TextStyle(
-                        color: controller.selectedIndex.value == 3 ? mainColor : lightGreyTxt,
+                        color: controller.selectedIndex.value == 3 ? pGreen : lightGreyTxt,
                         fontSize: Dimensions.font14 - 2,
                         fontFamily: semiBold,
                         fontStyle: FontStyle.normal,
@@ -192,7 +200,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
   void updateFcm() async {
     FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-    firebaseMessaging.getToken().then((token) async {
+    firebaseMessaging.getToken().then(
+      (token) async {
         if (token != null) {
           var fcmToken = token.toString();
           Log.console("fcm=$fcmToken");

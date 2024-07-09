@@ -8,9 +8,9 @@ import 'package:fittyus/services/api_url.dart';
 
 class CoachesListScreen extends StatefulWidget {
   final String categoryId;
-  final String? city;
+  final String city;
 
-  const CoachesListScreen({super.key, required this.categoryId, this.city});
+  const CoachesListScreen({super.key, required this.categoryId, required this.city});
 
   @override
   State<CoachesListScreen> createState() => _CoachesListScreenState();
@@ -128,18 +128,8 @@ class _CoachesListScreenState extends State<CoachesListScreen> {
                       return SizedBox(
                         width: Dimensions.screenWidth,
                         height: Dimensions.screenHeight - 200,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              'No  Coach Found',
-                              style: TextStyle(
-                                  color: mainColor,
-                                  fontSize: Dimensions.font16 + 2,
-                                  fontFamily: regular,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
+                       child: Image.asset(noCoachFound,
+                         fit: BoxFit.contain,
                         ),
                       );
                     }

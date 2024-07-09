@@ -122,18 +122,12 @@ class _TrainingSessionScreenState extends State<TrainingSessionScreen> {
                       );
                     }
                     if (contextCtrl.sessionList.isEmpty) {
-                      return SizedBox(
-                        height: MediaQuery.of(context).size.height - 300,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(width: MediaQuery.of(context).size.width),
-                            Text(
-                              "Now No Session Found",
-                              style: TextStyle(color: subPrimaryCl, fontFamily: semiBold, fontWeight: FontWeight.w600, fontStyle: FontStyle.normal, fontSize: Dimensions.font14),
-                            ),
-                          ],
+                      return  SizedBox(
+                        width: Dimensions.screenWidth,
+                        height: Dimensions.screenHeight - 300,
+                        child: Image.asset(
+                          noData,
+                          fit: BoxFit.contain,
                         ),
                       );
                     }
@@ -185,7 +179,7 @@ class _TrainingSessionScreenState extends State<TrainingSessionScreen> {
                         SizedBox(
                           width: 60,
                           child: Text(
-                            list.timeslots != null ? list.timeslots.toString().substring(0, 7) : "",
+                            list.timeslots != null ? list.timeslots.toString() : "",
                             textAlign: TextAlign.center,
                             style: TextStyle(color: mainColor, fontFamily: bold, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 2),
                           ),
@@ -197,7 +191,7 @@ class _TrainingSessionScreenState extends State<TrainingSessionScreen> {
                           decoration: const BoxDecoration(shape: BoxShape.circle),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(25),
-                            child: list.sessionImage!.isNotEmpty
+                            child: list.sessionImage!=""
                                 ? CachedNetworkImage(
                                     errorWidget: (context, url, error) => Image.asset(
                                       certificateImg,

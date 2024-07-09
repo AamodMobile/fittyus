@@ -93,7 +93,7 @@ class PackageDetail {
         totalAmount: json["total_amount"],
         originalTotalAmount: json["original_total_amount"],
         couponDiscount: json["coupon_discount"],
-        couponCode: json["coupon_code"],
+        couponCode: json["coupon_code"]??"",
       );
 
   Map<String, dynamic> toJson() => {

@@ -19,13 +19,6 @@ class _MYSessionScreenState extends State<MYSessionScreen> {
   MySessionListController controller = Get.put(MySessionListController());
 
   @override
-  void initState() {
-    controller.mySessionList.clear();
-    controller.isLoading = true;
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return GetBuilder(
       init: Get.find<MySessionListController>(),
@@ -36,22 +29,12 @@ class _MYSessionScreenState extends State<MYSessionScreen> {
         return SafeArea(
           child: Scaffold(
             backgroundColor: whiteColor,
-            appBar:  PreferredSize(
-              preferredSize: Size(Dimensions.height90,MediaQuery.of(context).size.width),
+            appBar: PreferredSize(
+              preferredSize: Size(Dimensions.height90, MediaQuery.of(context).size.width),
               child: Container(
-                height: Dimensions.height45+Dimensions.height20,
+                height: Dimensions.height45 + Dimensions.height20,
                 padding: const EdgeInsets.symmetric(horizontal: 15),
-                decoration: const BoxDecoration(
-                    color: whiteColor,
-                    boxShadow: [
-                      BoxShadow(
-                          offset: Offset(0,1),
-                          blurRadius: 15,
-                          spreadRadius: 0,
-                          color: Color.fromRGBO(0, 0, 0, 0.2)
-                      )
-                    ]
-                ),
+                decoration: const BoxDecoration(color: whiteColor, boxShadow: [BoxShadow(offset: Offset(0, 1), blurRadius: 15, spreadRadius: 0, color: Color.fromRGBO(0, 0, 0, 0.2))]),
                 child: Row(
                   children: [
                     SizedBox(
@@ -73,19 +56,14 @@ class _MYSessionScreenState extends State<MYSessionScreen> {
                     ),
                     Text(
                       "My Sessions",
-                      style: TextStyle(
-                          color: mainColor,
-                          fontFamily: semiBold,
-                          fontWeight: FontWeight.w500,
-                          fontStyle: FontStyle.normal,
-                          fontSize: Dimensions.font16),
+                      style: TextStyle(color: mainColor, fontFamily: semiBold, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font16),
                     ),
                     const Spacer(),
                     Visibility(
                       visible: false,
                       child: InkWell(
                           onTap: () {},
-                          child:  Container(
+                          child: Container(
                             height: 44,
                             width: 90,
                             margin: const EdgeInsets.only(right: 10),
@@ -95,17 +73,11 @@ class _MYSessionScreenState extends State<MYSessionScreen> {
                               child: Center(
                                 child: Text(
                                   "Clear All",
-                                  style: TextStyle(
-                                      color: whiteColor,
-                                      fontFamily: semiBold,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: Dimensions.font14 - 2),
+                                  style: TextStyle(color: whiteColor, fontFamily: semiBold, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 2),
                                 ),
                               ),
                             ),
-                          )
-                      ),
+                          )),
                     )
                   ],
                 ),
@@ -152,12 +124,7 @@ class _MYSessionScreenState extends State<MYSessionScreen> {
                             ),
                             Text(
                               "You have No  Session now",
-                              style: TextStyle(
-                                  color: subPrimaryCl,
-                                  fontFamily: semiBold,
-                                  fontWeight: FontWeight.w600,
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: Dimensions.font14),
+                              style: TextStyle(color: subPrimaryCl, fontFamily: semiBold, fontWeight: FontWeight.w600, fontStyle: FontStyle.normal, fontSize: Dimensions.font14),
                             ),
                           ],
                         ),
@@ -167,8 +134,7 @@ class _MYSessionScreenState extends State<MYSessionScreen> {
                       child: ListView.builder(
                         itemCount: contextCtrl.mySessionList.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return mySessionListTile(
-                              contextCtrl.mySessionList[index]);
+                          return mySessionListTile(contextCtrl.mySessionList[index]);
                         },
                       ),
                     );
@@ -203,8 +169,7 @@ class _MYSessionScreenState extends State<MYSessionScreen> {
               borderRadius: BorderRadius.circular(15.0),
               color: list.isExpire == 1 ? Colors.grey[300] : Colors.white,
             ),
-            padding:
-                const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -220,10 +185,7 @@ class _MYSessionScreenState extends State<MYSessionScreen> {
                           list.name.toString(),
                           textAlign: TextAlign.start,
                           maxLines: 2,
-                          style: const TextStyle(
-                              color: mainColor,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16),
+                          style: const TextStyle(color: mainColor, fontWeight: FontWeight.w500, fontSize: 16),
                         ),
                       ),
                       Container(
@@ -270,16 +232,14 @@ class _MYSessionScreenState extends State<MYSessionScreen> {
                       Row(
                         children: [
                           RatingBar.builder(
-                            initialRating:
-                                double.parse(list.averageRating.toString()),
+                            initialRating: double.parse(list.averageRating.toString()),
                             minRating: 1,
                             ignoreGestures: true,
                             direction: Axis.horizontal,
                             allowHalfRating: true,
                             itemCount: 5,
                             itemSize: 20.0,
-                            itemPadding:
-                                const EdgeInsets.symmetric(horizontal: 0.0),
+                            itemPadding: const EdgeInsets.symmetric(horizontal: 0.0),
                             itemBuilder: (context, _) => const Icon(
                               Icons.star,
                               color: Colors.amber,
@@ -305,7 +265,9 @@ class _MYSessionScreenState extends State<MYSessionScreen> {
                               margin: const EdgeInsets.only(left: 5, top: 5),
                               child: GestureDetector(
                                 onTap: () {
-                                  Get.to(() =>  GiveFeedBackScreen(id: list.coachId.toString(),));
+                                  Get.to(() => GiveFeedBackScreen(
+                                        id: list.coachId.toString(),
+                                      ));
                                 },
                                 child: const Text(
                                   'Add Review',
@@ -329,16 +291,15 @@ class _MYSessionScreenState extends State<MYSessionScreen> {
                     onTap: () async {
                       Log.console("Join");
                       try {
-                        String url = list.meetingLink??"";
-                        if (!await launchUrl(Uri.parse(url),
-                            mode: LaunchMode.externalApplication)) {
+                        String url = list.meetingLink ?? "";
+                        if (!await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication)) {
                           throw 'Could not launch $url';
                         }
                       } catch (e) {
                         Log.console(e);
                       }
                     },
-                    child:  Container(
+                    child: Container(
                       height: 30,
                       width: 80,
                       decoration: BoxDecoration(
@@ -349,12 +310,7 @@ class _MYSessionScreenState extends State<MYSessionScreen> {
                       child: Center(
                         child: Text(
                           "Join Now",
-                          style: TextStyle(
-                              color: pGreen,
-                              fontFamily: medium,
-                              fontWeight: FontWeight.w400,
-                              fontStyle: FontStyle.normal,
-                              fontSize: Dimensions.font14 - 4),
+                          style: TextStyle(color: pGreen, fontFamily: medium, fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 4),
                         ),
                       ),
                     ),

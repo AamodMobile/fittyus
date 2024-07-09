@@ -7,15 +7,17 @@ import '../services/api_services.dart';
 
 class MySessionListController extends GetxController implements GetxService {
   var mySessionList = <MySessionListModel>[].obs;
-  bool isLoading = true;
+  bool isLoading = false;
 
   Future<void> mySessionListApi() async {
     try {
+     mySessionList.clear();
+      isLoading = true;
       var result = await ApiServices.mySessionList();
       var json = jsonDecode(result.body);
       if (json["status"] == true) {
         mySessionList.value = List<MySessionListModel>.from(
-                json['data']["category"].map((i) => MySessionListModel.fromJson(i)))
+                json['data'].map((i) => MySessionListModel.fromJson(i)))
             .toList(growable: true);
         isLoading = false;
       } else {

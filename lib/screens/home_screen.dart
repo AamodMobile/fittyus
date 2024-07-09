@@ -10,7 +10,7 @@ import 'package:fittyus/screens/blog_details_screen.dart';
 import 'package:fittyus/screens/blog_list_screen.dart';
 import 'package:fittyus/screens/category_screen.dart';
 import 'package:fittyus/screens/coach_details_screen.dart';
-import 'package:fittyus/screens/coachs_list_screen.dart';
+import 'package:fittyus/screens/coaches_list_screen.dart';
 import 'package:fittyus/screens/comment_list_screen.dart';
 import 'package:fittyus/screens/community_screen.dart';
 import 'package:fittyus/screens/new_challenge_screen.dart';
@@ -19,7 +19,6 @@ import 'package:fittyus/screens/offer_details_screen.dart';
 import 'package:fittyus/screens/refer_and_earn_screen.dart';
 import 'package:fittyus/screens/search_new_screen.dart';
 import 'package:fittyus/services/api_url.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -42,8 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
     controller.city.value = "";
     controller.getCheckInStatus();
     user.getUser();
-    controller.getHomeApi();
-    controller.isLoading = true;
     super.initState();
   }
 
@@ -255,8 +252,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            "Banner And Offers",
-                                            style: TextStyle(color: mainColor, fontFamily: bold, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font14),
+                                            "Coupons And Offers",
+                                            style: TextStyle(
+                                              color: mainColor,
+                                              fontFamily: bold,
+                                              fontWeight: FontWeight.w500,
+                                              fontStyle: FontStyle.normal,
+                                              fontSize: Dimensions.font14,
+                                            ),
                                           ),
                                           Visibility(
                                             visible: false,
@@ -538,7 +541,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     ),
                                                     InkWell(
                                                       onTap: () {
-                                                        Get.to(() => const CoachesListScreen(categoryId: "", city: ""));
+                                                        if (controller.city.value == "") {
+                                                          controller.getCheckInStatus();
+                                                        } else {
+                                                          Get.to(() => CoachesListScreen(city: controller.city.value, categoryId: ""));
+                                                        }
                                                       },
                                                       child: SizedBox(
                                                         child: Row(
@@ -579,7 +586,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 SizedBox(
                                                   height: 100,
                                                   width: MediaQuery.of(context).size.width,
-                                                  child: ListView.builder(
+                                                  child: contextCtrl.teacherList.isNotEmpty?
+                                                  ListView.builder(
                                                     scrollDirection: Axis.horizontal,
                                                     itemCount: contextCtrl.teacherList.length,
                                                     itemBuilder: (BuildContext context, int index) {
@@ -681,6 +689,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         ),
                                                       );
                                                     },
+                                                  ):Center(
+                                                    child:  Text(
+                                                      "No Coach Found In This Location",
+                                                      style: TextStyle(
+                                                        color: mainColor,
+                                                        fontFamily: bold,
+                                                        fontWeight: FontWeight.w500,
+                                                        fontStyle: FontStyle.normal,
+                                                        fontSize: Dimensions.font14,
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
                                                 const SizedBox(
@@ -722,17 +741,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                               itemBuilder: (BuildContext context, int index) {
                                                 return InkWell(
                                                     onTap: () {
-                                                      if (contextCtrl.categoryList[index].title.toString().contains("Injury")) {
-                                                        if (controller.city.value == "") {
-                                                          controller.getCheckInStatus();
-                                                        } else {
-                                                          Get.to(() => CoachesListScreen(city: controller.city.value, categoryId: contextCtrl.categoryList[index].id.toString()));
-                                                        }
+                                                      if (controller.city.value == "") {
+                                                        controller.getCheckInStatus();
                                                       } else {
-                                                        Get.to(() => CoachesListScreen(
-                                                              city: "",
-                                                              categoryId: contextCtrl.categoryList[index].id.toString(),
-                                                            ));
+                                                        Get.to(() => CoachesListScreen(city: controller.city.value, categoryId: contextCtrl.categoryList[index].id.toString()));
                                                       }
                                                     },
                                                     child: Stack(
@@ -932,7 +944,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               )
                                             ],
                                           ),
-                                          const SizedBox(height: 20),
+                                          const SizedBox(height: 10),
                                           ListView.builder(
                                             physics: const NeverScrollableScrollPhysics(),
                                             shrinkWrap: true,
@@ -947,11 +959,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   );
                                                 },
                                                 child: Container(
-                                                  margin: const EdgeInsets.only(top: 3),
-                                                  padding: const EdgeInsets.all(10),
+                                                  margin: const EdgeInsets.only(top: 8),
+                                                  padding: const EdgeInsets.all(12),
                                                   decoration: BoxDecoration(
                                                     color: whiteColor,
-                                                    borderRadius: BorderRadius.circular(4),
+                                                    borderRadius: BorderRadius.circular(15),
                                                     boxShadow: [
                                                       BoxShadow(
                                                         offset: const Offset(0, 1),
@@ -964,106 +976,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   child: Column(
                                                     children: [
                                                       Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                        children: [
-                                                          Row(
-                                                            children: [
-                                                              Container(
-                                                                height: 30,
-                                                                width: 30,
-                                                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                                                                child: ClipRRect(
-                                                                  borderRadius: BorderRadius.circular(20),
-                                                                  child: contextCtrl.blogList[index].profileImage != null && contextCtrl.blogList[index].profileImage != ""
-                                                                      ? CachedNetworkImage(
-                                                                          errorWidget: (context, url, error) => Image.asset(
-                                                                            defaultUser,
-                                                                            fit: BoxFit.cover,
-                                                                          ),
-                                                                          fit: BoxFit.cover,
-                                                                          imageUrl: ApiUrl.imageBaseUrl + contextCtrl.blogList[index].profileImage.toString(),
-                                                                          placeholder: (a, b) => const Center(
-                                                                            child: CircularProgressIndicator(
-                                                                              color: mainColor,
-                                                                            ),
-                                                                          ),
-                                                                        )
-                                                                      : Image.asset(
-                                                                          defaultUser,
-                                                                          fit: BoxFit.cover,
-                                                                        ),
-                                                                ),
-                                                              ),
-                                                              const SizedBox(
-                                                                width: 8,
-                                                              ),
-                                                              SizedBox(
-                                                                width: MediaQuery.of(context).size.width * 0.50,
-                                                                child: Text(
-                                                                  contextCtrl.blogList[index].firstName.toString(),
-                                                                  style: TextStyle(
-                                                                    color: mainColor,
-                                                                    fontFamily: semiBold,
-                                                                    fontWeight: FontWeight.w500,
-                                                                    fontStyle: FontStyle.normal,
-                                                                    fontSize: Dimensions.font14,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          Text(
-                                                            contextCtrl.blogList[index].date.toString(),
-                                                            style: TextStyle(
-                                                              color: lightGreyTxt,
-                                                              fontFamily: regular,
-                                                              fontWeight: FontWeight.w400,
-                                                              fontStyle: FontStyle.normal,
-                                                              fontSize: Dimensions.font14 - 4,
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      Row(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         children: [
-                                                          Expanded(
-                                                            child: Column(
-                                                              children: [
-                                                               /* Html(
-                                                                  data: contextCtrl.blogList[index].description.toString(),
-                                                                  style: {
-                                                                    "body": Style(
-                                                                      fontSize: FontSize(Dimensions.font14),
-                                                                      color: mainColor,
-                                                                      fontFamily: semiBold,
-                                                                      fontWeight: FontWeight.w500,
-                                                                      fontStyle: FontStyle.normal,
-                                                                      maxLines: 2,
-                                                                    ),
-                                                                  },
-                                                                ),*/
-                                                                Text(
-                                                                  contextCtrl.blogList[index].shortDescription.toString(),
-                                                                  maxLines: 2,
-                                                                  style: TextStyle(
-                                                                    overflow: TextOverflow.ellipsis,
-                                                                    color: lightGreyTxt,
-                                                                    fontFamily: regular,
-                                                                    fontWeight: FontWeight.w400,
-                                                                    fontStyle: FontStyle.normal,
-                                                                    fontSize: Dimensions.font14 - 4,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          const SizedBox(
-                                                            width: 8,
-                                                          ),
                                                           Container(
                                                             height: 104,
                                                             width: 106,
@@ -1090,6 +1004,59 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       demoImg,
                                                                       fit: BoxFit.cover,
                                                                     ),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(width: 8),
+                                                          Expanded(
+                                                            child: Column(
+                                                              children: [
+                                                                Text(
+                                                                  contextCtrl.blogList[index].title.toString(),
+                                                                  maxLines: 2,
+                                                                  style: TextStyle(
+                                                                    overflow: TextOverflow.ellipsis,
+                                                                    color: mainColor,
+                                                                    fontFamily: semiBold,
+                                                                    fontWeight: FontWeight.w400,
+                                                                    fontStyle: FontStyle.normal,
+                                                                    fontSize: Dimensions.font14,
+                                                                  ),
+                                                                ),
+                                                                const SizedBox(
+                                                                  height: 5,
+                                                                ),
+                                                                Text(
+                                                                  contextCtrl.blogList[index].shortDescription.toString(),
+                                                                  maxLines: 2,
+                                                                  style: TextStyle(
+                                                                    overflow: TextOverflow.ellipsis,
+                                                                    color: lightGreyTxt,
+                                                                    fontFamily: regular,
+                                                                    fontWeight: FontWeight.w400,
+                                                                    fontStyle: FontStyle.normal,
+                                                                    fontSize: Dimensions.font14 - 4,
+                                                                  ),
+                                                                ),
+                                                                const SizedBox(
+                                                                  height: 5,
+                                                                ),
+                                                                Row(
+                                                                  children: [
+                                                                    Text(
+                                                                      "Posted : ${contextCtrl.blogList[index].date}",
+                                                                      maxLines: 2,
+                                                                      style: TextStyle(
+                                                                        overflow: TextOverflow.ellipsis,
+                                                                        color: lightGreyTxt,
+                                                                        fontFamily: regular,
+                                                                        fontWeight: FontWeight.w400,
+                                                                        fontStyle: FontStyle.normal,
+                                                                        fontSize: Dimensions.font14 - 4,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ],
                                                             ),
                                                           ),
                                                         ],

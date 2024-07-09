@@ -7,10 +7,12 @@ import 'package:fittyus/controller/coach_details_controller.dart';
 import 'package:fittyus/model/coach_details_model.dart';
 import 'package:fittyus/screens/plan_screen.dart';
 import 'package:fittyus/screens/video_play_screen.dart';
+import 'package:fittyus/widgets/my_button.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+
 import '../services/api_url.dart';
 
 class CoachDetailsScreen extends StatefulWidget {
@@ -160,9 +162,18 @@ class _CoachDetailsScreenState extends State<CoachDetailsScreen> {
                         width: Get.width,
                         child: ClipRRect(
                           child: contextCtrl.coachDetails.value.image != null && contextCtrl.coachDetails.value.image != ""
-                              ? Image.network(
-                                  ApiUrl.imageBaseUrl + contextCtrl.coachDetails.value.image.toString(),
+                              ? CachedNetworkImage(
+                                  errorWidget: (context, url, error) => Image.asset(
+                                    coachImg,
+                                    fit: BoxFit.fill,
+                                  ),
                                   fit: BoxFit.fill,
+                                  height: 212,
+                                  width: Get.width,
+                                  imageUrl: ApiUrl.imageBaseUrl + contextCtrl.coachDetails.value.image.toString(),
+                                  placeholder: (a, b) => const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
                                 )
                               : Image.asset(
                                   coachImg,
@@ -901,34 +912,26 @@ class _CoachDetailsScreenState extends State<CoachDetailsScreen> {
             bottomSheet: controller.isLoading
                 ? const SizedBox()
                 : Container(
-                    height: 70,
-                    width: MediaQuery.of(context).size.width,
-                    color: whiteColor,
-                    child: Center(
-                      child: InkWell(
-                        onTap: () {
-                          Get.to(() => PlanScreen(coachId: controller.coachDetails.value.id.toString()));
-                        },
-                        child: Container(
-                          width: 100,
-                          height: 36,
-                          decoration: const BoxDecoration(color: whiteColor, boxShadow: [BoxShadow(offset: Offset(0, 4), blurRadius: 4, spreadRadius: 0, color: Color.fromRGBO(0, 0, 0, 0.25))]),
-                          child: Center(
-                            child: Text(
-                              "Book Now",
-                              style: TextStyle(
-                                color: mainColor,
-                                fontSize: Dimensions.font14 - 2,
-                                fontFamily: medium,
-                                fontWeight: FontWeight.w500,
-                                fontStyle: FontStyle.normal,
-                              ),
-                            ),
-                          ),
+              width: MediaQuery.of(context).size.width,
+              color: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                  child: MyButton(
+                      onPressed: () {
+                        Get.to(() => PlanScreen(coachId: controller.coachDetails.value.id.toString()));
+                      },
+                      color: pGreen,
+                      child: Text(
+                        "Book Now",
+                        style: TextStyle(
+                          color: whiteColor,
+                          fontFamily: semiBold,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.normal,
+                          fontSize: Dimensions.font14,
                         ),
                       ),
                     ),
-                  ),
+                ),
           ),
         );
       },

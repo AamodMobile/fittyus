@@ -185,7 +185,7 @@ class _NewProfileScreenState extends State<NewProfileScreen> {
                         ),
                         Positioned(
                             left: 11,
-                            bottom: 0,
+                            bottom: -10,
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width,
                               child: Row(
@@ -259,8 +259,21 @@ class _NewProfileScreenState extends State<NewProfileScreen> {
                                       const SizedBox(width: 7),
                                       Column(
                                         mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           const SizedBox(height: 20),
+                                          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                                            Text(
+                                              cont.viewProfileModel.value.firstName.toString(),
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                color: mainColor,
+                                                fontFamily: semiBold,
+                                                fontWeight: FontWeight.w700,
+                                                fontStyle: FontStyle.normal,
+                                                fontSize: Dimensions.font14,
+                                              ),
+                                            ),]),
                                           Row(
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
@@ -339,15 +352,7 @@ class _NewProfileScreenState extends State<NewProfileScreen> {
                             ))
                       ],
                     ),
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Text(
-                        cont.viewProfileModel.value.firstName.toString(),
-                        style: TextStyle(color: mainColor, fontFamily: semiBold, fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 4),
-                      ),
-                    ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 20),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       width: MediaQuery.of(context).size.width,
@@ -391,24 +396,24 @@ class _NewProfileScreenState extends State<NewProfileScreen> {
                                               ),
                                               child: ClipRRect(
                                                 borderRadius: BorderRadius.circular(9),
-                                                child: cont.viewProfileModel.value.followersList![index].profileImage != null && cont.viewProfileModel.value.followersList![index].profileImage != ""
+                                                child:    cont.viewProfileModel.value.followersList![index].profileImage != null && cont.viewProfileModel.value.followersList![index].profileImage != ""
                                                     ? CachedNetworkImage(
-                                                        errorWidget: (context, url, error) => Image.asset(
-                                                          defaultUser,
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                        fit: BoxFit.cover,
-                                                        imageUrl: cont.viewProfileModel.value.followersList![index].profileImage.toString(),
-                                                        placeholder: (a, b) => const Center(
-                                                          child: CircularProgressIndicator(
-                                                            color: mainColor,
-                                                          ),
-                                                        ),
-                                                      )
+                                                  errorWidget: (context, url, error) => Image.asset(
+                                                    defaultUser,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                  fit: BoxFit.cover,
+                                                  imageUrl:  cont.viewProfileModel.value.followersList![index].profileImage.toString(),
+                                                  placeholder: (a, b) => const Center(
+                                                    child: CircularProgressIndicator(
+                                                      color: mainColor,
+                                                    ),
+                                                  ),
+                                                )
                                                     : Image.asset(
-                                                        demoImg,
-                                                        fit: BoxFit.cover,
-                                                      ),
+                                                  defaultUser,
+                                                  fit: BoxFit.cover,
+                                                )
                                               ),
                                             ),
                                             const SizedBox(height: 2),
@@ -504,9 +509,9 @@ class _NewProfileScreenState extends State<NewProfileScreen> {
         Get.to(() => CommunityDetails(communityId: list.id.toString()));
       },
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.006),
+        margin: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.006,horizontal: 5),
         padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.01, vertical: MediaQuery.of(context).size.height * 0.01),
-        decoration: BoxDecoration(color: whiteColor, borderRadius: BorderRadius.circular(2)),
+        decoration: BoxDecoration(color: whiteColor, borderRadius: BorderRadius.circular(10),border: Border.all(color: borderColorCont)),
         child: Column(
           children: [
             Padding(
@@ -524,12 +529,12 @@ class _NewProfileScreenState extends State<NewProfileScreen> {
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
-                            child: list.profileImage != null && list.profileImage != ""
+                            child:  list.profileImage != ""
                                 ? CachedNetworkImage(
-                                    errorWidget: (context, url, error) => Image.asset(
+                                    /*errorWidget: (context, url, error) => Image.asset(
                                       defaultUser,
                                       fit: BoxFit.cover,
-                                    ),
+                                    ),*/
                                     fit: BoxFit.cover,
                                     imageUrl: list.profileImage.toString(),
                                     placeholder: (a, b) => const Center(
@@ -775,7 +780,7 @@ class _NewProfileScreenState extends State<NewProfileScreen> {
                             ),
                           )
                               : Image.asset(demoImg, height: MediaQuery.of(context).size.height * 0.400, fit: BoxFit.cover))
-                          : SizedBox(),
+                          : const SizedBox(),
                       list.afterImage != "" && list.afterImage != null
                           ? Expanded(
                           child: list.afterImage != "" && list.afterImage != null
@@ -864,16 +869,56 @@ class _NewProfileScreenState extends State<NewProfileScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                InkWell(
-                  onTap: () {
-                    controller.communityLike(list.id.toString(), list.isLike.toString() == "0" ? "1" : "0").then((value) {
-                      Get.find<UserController>().viewProfile(widget.id, true).then((value) {
-                        controller.isLoading.value = true;
-                        indices = List.generate(userController.viewProfileModel.value.community!.length, (index) => 0);
-                        controller.isLoading.value = false;
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      controller.communityLike(list.id.toString(), list.isLike.toString() == "0" ? "1" : "0").then((value) {
+                        Get.find<UserController>().viewProfile(widget.id, true).then((value) {
+                          controller.isLoading.value = true;
+                          indices = List.generate(userController.viewProfileModel.value.community!.length, (index) => 0);
+                          controller.isLoading.value = false;
+                        });
                       });
-                    });
-                  },
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: whiteColor,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          list.isLike.toString() == "0"
+                              ? Image.asset(
+                                  heartIc,
+                                  height: 16,
+                                  width: 16,
+                                )
+                              : Image.asset(
+                                  heartPinkIc,
+                                  height: 16,
+                                  width: 16,
+                                ),
+                          const SizedBox(width: 4),
+                          Text(
+                            "like ${list.communityCount}",
+                            maxLines: 2,
+                            style: TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              color: mainColor,
+                              fontFamily: regular,
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.normal,
+                              fontSize: Dimensions.font14 - 4,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
@@ -881,21 +926,16 @@ class _NewProfileScreenState extends State<NewProfileScreen> {
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        list.isLike.toString() == "0"
-                            ? Image.asset(
-                                heartIc,
-                                height: 16,
-                                width: 16,
-                              )
-                            : Image.asset(
-                                heartPinkIc,
-                                height: 16,
-                                width: 16,
-                              ),
+                        Image.asset(
+                          commentNewIc,
+                          height: 16,
+                          width: 16,
+                        ),
                         const SizedBox(width: 4),
                         Text(
-                          "like ${list.communityCount}",
+                          "Comment",
                           maxLines: 2,
                           style: TextStyle(
                             overflow: TextOverflow.ellipsis,
@@ -910,37 +950,8 @@ class _NewProfileScreenState extends State<NewProfileScreen> {
                     ),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: whiteColor,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        commentNewIc,
-                        height: 16,
-                        width: 16,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        "Comment",
-                        maxLines: 2,
-                        style: TextStyle(
-                          overflow: TextOverflow.ellipsis,
-                          color: mainColor,
-                          fontFamily: regular,
-                          fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.normal,
-                          fontSize: Dimensions.font14 - 4,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
                 Visibility(
-                  visible: true,
+                  visible: false,
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
@@ -973,22 +984,25 @@ class _NewProfileScreenState extends State<NewProfileScreen> {
                     ),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: whiteColor,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Text(
-                    "200 Views",
-                    maxLines: 2,
-                    style: TextStyle(
-                      overflow: TextOverflow.ellipsis,
-                      color: mainColor,
-                      fontFamily: regular,
-                      fontWeight: FontWeight.w400,
-                      fontStyle: FontStyle.normal,
-                      fontSize: Dimensions.font14 - 4,
+                Visibility(
+                  visible: false,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: whiteColor,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      "200 Views",
+                      maxLines: 2,
+                      style: TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        color: mainColor,
+                        fontFamily: regular,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                        fontSize: Dimensions.font14 - 4,
+                      ),
                     ),
                   ),
                 ),
@@ -1013,7 +1027,7 @@ class _NewProfileScreenState extends State<NewProfileScreen> {
                                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
-                                  child: list.comments![0].userImage != null && list.comments![0].userImage != ""
+                                  child: list.comments![0].userImage != ""
                                       ? CachedNetworkImage(
                                           errorWidget: (context, url, error) => Image.asset(
                                             defaultUser,
@@ -1095,7 +1109,11 @@ class _NewProfileScreenState extends State<NewProfileScreen> {
                             child: Row(
                               children: [
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    controller.likeComment(list.comments![0].id.toString()).then((value) {
+
+                                    });
+                                  },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                                     decoration: BoxDecoration(

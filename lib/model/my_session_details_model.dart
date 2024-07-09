@@ -62,7 +62,7 @@ class MySessionDetails {
     city: json["city"],
     zip: json["zip"],
     teacherName: json["teacher_name"],
-    averageRating: json["average_rating"],
+    averageRating: json["average_rating"]??0,
     isExpire: json["is_expire"],
     timeSlot: json["time_slot"],
   );

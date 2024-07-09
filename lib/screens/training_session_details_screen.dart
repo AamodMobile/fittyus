@@ -356,7 +356,7 @@ class _TrainingSessionDetailsScreenState
                                               ApiUrl.imageBaseUrl +
                                                   contextCtrl.coachDetails.value.image
                                                       .toString(),
-                                              fit: BoxFit.cover,
+                                              fit: BoxFit.fill,
                                             )
                                           : Image.asset(
                                               coachTopImg,

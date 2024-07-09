@@ -87,17 +87,13 @@ class _MyChallengesScreenState extends State<MyChallengesScreen> {
                       }
 
                       if (contextCtrl.allChallengeList.isEmpty) {
-                        return SizedBox(
-                          width: Dimensions.screenWidth,
+                        return  SizedBox(
                           height: Dimensions.screenHeight - 200,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'No  Challenge Found',
-                                style: TextStyle(color: mainColor, fontSize: Dimensions.font16 + 2, fontFamily: regular, fontWeight: FontWeight.w600),
-                              ),
-                            ],
+                          width: Dimensions.screenWidth,
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              color: mainColor,
+                            ),
                           ),
                         );
                       }

@@ -104,3 +104,5 @@ const uploadImg = 'assets/images/upload_img.png';
 const referImg = "assets/images/refer.png";
 const dotImgAc = "assets/images/dot_border.png";
 const uploadProfileBg ="assets/icons/upload_profile.png";
+const noCoachFound ="assets/images/no_coach_found.png";
+const noData ="assets/images/no_data.png";

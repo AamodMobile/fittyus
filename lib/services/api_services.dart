@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:fittyus/services/api_client.dart';
+import 'package:fittyus/services/api_logs.dart';
 import 'package:fittyus/services/api_url.dart';
 import 'package:get/get_connect/connect.dart';
 import 'package:http/http.dart' as http;
@@ -51,16 +52,15 @@ class ApiServices extends GetConnect {
     return response;
   }
 
-  static Future<http.Response> getHomeApi() async {
+  static Future<http.Response> getHomeApi(String city) async {
     http.Response response;
     var instance = await SharedPreferences.getInstance();
     var token = instance.getString('currentToken');
-    var result = await ApiClient.postData(
-      ApiUrl.homeApi,
-      headers: {
-        'Authorization': 'Bearer $token',
-      },
-    );
+    var result = await ApiClient.postData(ApiUrl.homeApi, headers: {
+      'Authorization': 'Bearer $token',
+    }, body: {
+      "city": city
+    });
     response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
     return response;
   }
@@ -130,6 +130,7 @@ class ApiServices extends GetConnect {
     String address,
     String gender,
     String occupation,
+    String pincode,
     String image,
   ) async {
     var result;
@@ -151,11 +152,13 @@ class ApiServices extends GetConnect {
       request.fields['address'] = address;
       request.fields['gender'] = gender;
       request.fields['occupation'] = occupation;
+      request.fields['pincode'] = pincode;
       if (image.isNotEmpty) {
         http.MultipartFile file = await http.MultipartFile.fromPath('avatar_url', image);
         request.files.add(file);
       }
       response = await http.Response.fromStream(await request.send());
+      print(response.body);
       if (response.body != null) {
         if (response.statusCode == 200) {
           result = jsonDecode(response.body);
@@ -266,7 +269,7 @@ class ApiServices extends GetConnect {
     return response;
   }
 
-  static Future<http.Response> addComment(String blogId, String message,String replyId) async {
+  static Future<http.Response> addComment(String blogId, String message, String replyId) async {
     http.Response response;
     var instance = await SharedPreferences.getInstance();
     var token = instance.getString('currentToken');
@@ -280,6 +283,7 @@ class ApiServices extends GetConnect {
     response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
     return response;
   }
+
   static Future<http.Response> deleteComment(String commentId) async {
     http.Response response;
     var instance = await SharedPreferences.getInstance();
@@ -292,20 +296,22 @@ class ApiServices extends GetConnect {
     response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
     return response;
   }
-  static Future<http.Response> likeComment(String blogId,String commentId,String isLike) async {
+
+  static Future<http.Response> likeComment(String blogId, String commentId, String isLike) async {
     http.Response response;
     var instance = await SharedPreferences.getInstance();
     var token = instance.getString('currentToken');
     var result = await ApiClient.postData(ApiUrl.blogCommentLike, headers: {
       'Authorization': 'Bearer $token',
     }, body: {
-      "blog_id":blogId,
+      "blog_id": blogId,
       "comment_id": commentId,
-      "is_like":isLike
+      "is_like": isLike
     });
     response = http.Response(jsonEncode(result), 200, headers: {HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'});
     return response;
   }
+
   static Future<http.Response> contactDetails() async {
     http.Response response;
     var instance = await SharedPreferences.getInstance();
@@ -962,7 +968,7 @@ class ApiServices extends GetConnect {
     return response;
   }
 
-  static Future<http.Response> challengeJoin(String challengeId,String transactionId) async {
+  static Future<http.Response> challengeJoin(String challengeId, String transactionId) async {
     http.Response response;
     var instance = await SharedPreferences.getInstance();
     var token = instance.getString('currentToken');
@@ -1031,7 +1037,7 @@ class ApiServices extends GetConnect {
     return response;
   }
 
-  static Future<http.Response> search(String search) async {
+  static Future<http.Response> search(String search, String city) async {
     http.Response response;
     var instance = await SharedPreferences.getInstance();
     var token = instance.getString('currentToken');
@@ -1039,6 +1045,7 @@ class ApiServices extends GetConnect {
       'Authorization': 'Bearer $token',
     }, body: {
       "search": search,
+      "city": city
     });
     response = http.Response(
       jsonEncode(result),
@@ -1191,6 +1198,7 @@ class ApiServices extends GetConnect {
         http.MultipartFile file = await http.MultipartFile.fromPath('before_image', beforeImg);
         request.files.add(file);
       }
+      Log.console(request.files);
       response = await http.Response.fromStream(await request.send());
       if (response.body != null) {
         if (response.statusCode == 200) {
@@ -1459,6 +1467,7 @@ class ApiServices extends GetConnect {
     );
     return response;
   }
+
   static Future<http.Response> updateFcmToken(String fcmToken) async {
     http.Response response;
     var instance = await SharedPreferences.getInstance();

@@ -55,8 +55,8 @@ class _AddCommunityScreenState extends State<AddCommunityScreen> {
       } else {
         radioButtonItem = "after_before";
         postType = 1;
-        imgAfter =ApiUrl.imageBaseUrl+ widget.modelEdit!.afterImage.toString();
-        imgBefore = ApiUrl.imageBaseUrl+ widget.modelEdit!.beforeImg.toString();
+        imgAfter = ApiUrl.imageBaseUrl + widget.modelEdit!.afterImage.toString();
+        imgBefore = ApiUrl.imageBaseUrl + widget.modelEdit!.beforeImg.toString();
       }
       _controller.isEditing.value = true;
     } else {
@@ -178,7 +178,13 @@ class _AddCommunityScreenState extends State<AddCommunityScreen> {
                           alignment: Alignment.centerLeft,
                           child: Text(
                             "Select Post Type",
-                            style: TextStyle(color: Colors.black, fontSize: 16, fontFamily: semiBold, fontWeight: FontWeight.w400, fontStyle: FontStyle.normal),
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontFamily: semiBold,
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.normal,
+                            ),
                           ),
                         ),
                         Row(
@@ -248,7 +254,13 @@ class _AddCommunityScreenState extends State<AddCommunityScreen> {
                                 alignment: Alignment.topLeft,
                                 child: Text(
                                   "Community Images",
-                                  style: TextStyle(color: mainColor, fontFamily: regular, fontWeight: FontWeight.w500, fontSize: Dimensions.font14, fontStyle: FontStyle.normal),
+                                  style: TextStyle(
+                                    color: mainColor,
+                                    fontFamily: regular,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: Dimensions.font14,
+                                    fontStyle: FontStyle.normal,
+                                  ),
                                 )),
                             SizedBox(
                               height: Dimensions.height10,
@@ -294,7 +306,11 @@ class _AddCommunityScreenState extends State<AddCommunityScreen> {
                                               clipBehavior: Clip.antiAlias,
                                               height: 100,
                                               width: 100,
-                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: mainColor, border: Border.all(color: mainColor)),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(5),
+                                                color: mainColor,
+                                                border: Border.all(color: mainColor),
+                                              ),
                                               child: CachedNetworkImage(
                                                 fit: BoxFit.cover,
                                                 imageUrl: _controller.communityImages[index],
@@ -330,7 +346,11 @@ class _AddCommunityScreenState extends State<AddCommunityScreen> {
                                               clipBehavior: Clip.antiAlias,
                                               height: 100,
                                               width: 100,
-                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: mainColor, border: Border.all(color: mainColor)),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(5),
+                                                color: mainColor,
+                                                border: Border.all(color: mainColor),
+                                              ),
                                               child: Image.file(File(_controller.communityImages[index].path), fit: BoxFit.cover),
                                             ),
                                             Positioned(
@@ -364,7 +384,13 @@ class _AddCommunityScreenState extends State<AddCommunityScreen> {
                                 alignment: Alignment.topLeft,
                                 child: Text(
                                   "After Before Image",
-                                  style: TextStyle(color: mainColor, fontFamily: regular, fontWeight: FontWeight.w500, fontSize: Dimensions.font14, fontStyle: FontStyle.normal),
+                                  style: TextStyle(
+                                    color: mainColor,
+                                    fontFamily: regular,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: Dimensions.font14,
+                                    fontStyle: FontStyle.normal,
+                                  ),
                                 )),
                             SizedBox(
                               height: Dimensions.height10,
@@ -418,7 +444,12 @@ class _AddCommunityScreenState extends State<AddCommunityScreen> {
                                                         ),
                                                       )
                                                     : Image.asset(uploadImg, height: 100, width: 100, fit: BoxFit.cover)
-                                                : Image.file(_controller.beforeImage.value, height: 100, width: 100, fit: BoxFit.cover),
+                                                : Image.file(
+                                                    _controller.beforeImage.value,
+                                                    height: 100,
+                                                    width: 100,
+                                                    fit: BoxFit.cover,
+                                                  ),
                                           ),
                                         ),
                                       ),

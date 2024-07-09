@@ -155,26 +155,14 @@ class _OfferScreenState extends State<OfferScreen> {
                       );
                     }
                     if (contCtr.couponNewList.isEmpty) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height * 0.30,
+                      return  SizedBox(
+                        height: Dimensions.screenHeight - 300,
+                        width: Dimensions.screenWidth,
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            color: mainColor,
                           ),
-                          Text(
-                            "Coupon",
-                            style: TextStyle(color: mainColor, fontFamily: semiBold, fontWeight: FontWeight.w600, fontStyle: FontStyle.normal, fontSize: Dimensions.font20),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            "There are no coupon here",
-                            style: TextStyle(color: subPrimaryCl, fontFamily: semiBold, fontWeight: FontWeight.w600, fontStyle: FontStyle.normal, fontSize: Dimensions.font14),
-                          ),
-                        ],
+                        ),
                       );
                     }
                     return Expanded(

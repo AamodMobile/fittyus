@@ -1,12 +1,17 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fittyus/constants/constants.dart';
 import 'package:fittyus/controller/challenges_controller.dart';
 import 'package:fittyus/controller/user_controller.dart';
 import 'package:fittyus/screens/new_profile_screen.dart';
+import 'package:fittyus/screens/video_play_screen.dart';
 import 'package:fittyus/screens/web_view_.dart';
 import 'package:fittyus/services/api_url.dart';
 import 'package:fittyus/widgets/my_button.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 class ChallengeDetailsScreen extends StatefulWidget {
   final String id;
@@ -20,11 +25,31 @@ class ChallengeDetailsScreen extends StatefulWidget {
 class _ChallengeDetailsScreenState extends State<ChallengeDetailsScreen> {
   ChallengesController controller = Get.put(ChallengesController());
   UserController user = Get.put(UserController());
+  var thumbPath;
 
   @override
   void initState() {
     user.getProfile();
+
     super.initState();
+  }
+
+  Future<void> _generateThumbnail() async {
+    try {
+      final tempDir = await getTemporaryDirectory();
+      final thumbnailPath = await VideoThumbnail.thumbnailFile(
+        video: controller.challengeDetails.value.video.toString(),
+        thumbnailPath: tempDir.path,
+        imageFormat: ImageFormat.JPEG,
+        maxWidth: 1000,
+        maxHeight: 1000,
+      );
+      setState(() {
+        thumbPath = thumbnailPath;
+      });
+    } catch (e) {
+      print('Error generating thumbnail: $e');
+    }
   }
 
   @override
@@ -32,7 +57,9 @@ class _ChallengeDetailsScreenState extends State<ChallengeDetailsScreen> {
     return GetBuilder(
       init: Get.find<ChallengesController>(),
       initState: (state) {
-        Get.find<ChallengesController>().getChallengeDetailsApi(widget.id);
+        Get.find<ChallengesController>().getChallengeDetailsApi(widget.id).then((value) {
+          _generateThumbnail();
+        });
       },
       builder: (contextCtr) {
         return SafeArea(
@@ -231,6 +258,70 @@ class _ChallengeDetailsScreenState extends State<ChallengeDetailsScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
+                        "Video",
+                        style: TextStyle(color: mainColor, fontFamily: semiBold, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font14),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: contextCtr.challengeDetails.value.video == ""
+                          ? Center(
+                              child: Text(
+                                "No Video yet",
+                                style: TextStyle(color: lightGreyTxt, fontFamily: regular, fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 4),
+                              ),
+                            )
+                          : InkWell(
+                              onTap: () {
+                                Get.to(() => VideoPlayScreen(file: contextCtr.challengeDetails.value.video.toString(), id: contextCtr.challengeDetails.value.id!.toInt()));
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                width: 175,
+                                height: 115,
+                                padding: EdgeInsets.all(2),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFFFFFFF),
+                                  border: Border.all(color: Colors.black),
+                                  // Secondary color
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Color.fromRGBO(255, 186, 0, 0.04),
+                                      offset: Offset(0, 4),
+                                      blurRadius: 20,
+                                      spreadRadius: 0,
+                                    ),
+                                  ],
+                                ),
+                                child: Stack(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(4),
+                                      child: thumbPath != null
+                                          ? Image.file(File(thumbPath))
+                                          : Image.asset(
+                                              coachTopImg,
+                                              fit: BoxFit.cover,
+                                            ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: Image.asset(
+                                        playIc,
+                                        height: 30,
+                                        width: 30,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                    ),
+                    const SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(
                         "Activity Level : Highly Active",
                         style: TextStyle(color: mainColor, fontFamily: semiBold, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font14),
                       ),
@@ -297,38 +388,36 @@ class _ChallengeDetailsScreenState extends State<ChallengeDetailsScreen> {
                     children: [
                       Container(
                         color: whiteColor,
-                        padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 20),
+                        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                         width: MediaQuery.of(context).size.width,
                         height: 60,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children:[
-                            Container(
-                              height: 36,
-                              width: 110,
-                              decoration: BoxDecoration(
-                                color: whiteColor,
-                                border: Border.all(color: pGreen),
-                                borderRadius: BorderRadius.circular(6),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Color.fromRGBO(0, 0, 0, 0.25),
-                                    offset: Offset(0, 4),
-                                    blurRadius: 4,
-                                    spreadRadius: 0,
-                                  ),
-                                ],
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Price ₹${controller.challengeDetails.value.price.toString()}",
-                                    style: TextStyle(color: pGreen, fontFamily: medium, fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 4),
-                                  )
-                                ],
-                              ),
+                        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                          Container(
+                            height: 36,
+                            width: 110,
+                            decoration: BoxDecoration(
+                              color: whiteColor,
+                              border: Border.all(color: pGreen),
+                              borderRadius: BorderRadius.circular(6),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Color.fromRGBO(0, 0, 0, 0.25),
+                                  offset: Offset(0, 4),
+                                  blurRadius: 4,
+                                  spreadRadius: 0,
+                                ),
+                              ],
                             ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Price ₹${controller.challengeDetails.value.price.toString()}",
+                                  style: TextStyle(color: pGreen, fontFamily: medium, fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 4),
+                                )
+                              ],
+                            ),
+                          ),
                           SizedBox(
                             width: 100,
                             child: MyButton(
@@ -347,8 +436,8 @@ class _ChallengeDetailsScreenState extends State<ChallengeDetailsScreen> {
                                 style: TextStyle(color: whiteColor, fontFamily: medium, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 2),
                               ),
                             ),
-                          ),]
-                        ),
+                          ),
+                        ]),
                       ),
                     ],
                   ),

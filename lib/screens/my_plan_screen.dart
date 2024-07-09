@@ -398,7 +398,7 @@ class _MyPlanScreenState extends State<MyPlanScreen> {
               ],
             ),
           ),
-          const SizedBox(height: 15)
+          const SizedBox(height: 10)
         ],
       ),
     );

@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fittyus/constants/constants.dart';
 import 'package:fittyus/controller/category_list_controller.dart';
 import 'package:fittyus/model/home_model.dart';
-import 'package:fittyus/screens/coachs_list_screen.dart';
+import 'package:fittyus/screens/coaches_list_screen.dart';
 import 'package:fittyus/services/api_url.dart';
 
 class CategoryScreen extends StatefulWidget {
@@ -106,17 +106,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       itemBuilder: (BuildContext context, int index) {
                         return InkWell(
                             onTap: () {
-                              if (contextCtrl.categoryList[index].title.toString().contains("Injury")) {
-                                if (controller.city.value == "") {
-                                  controller.getCurrentPosition();
-                                } else {
-                                  Get.to(() => CoachesListScreen(city: controller.city.value, categoryId: contextCtrl.categoryList[index].id.toString()));
-                                }
+                              if (controller.city.value == "") {
+                                controller.getCurrentPosition();
                               } else {
-                                Get.to(() => CoachesListScreen(
-                                      city: "",
-                                      categoryId: contextCtrl.categoryList[index].id.toString(),
-                                    ));
+                                Get.to(() => CoachesListScreen(city: controller.city.value, categoryId: contextCtrl.categoryList[index].id.toString()));
                               }
                             },
                             child: Stack(
@@ -183,7 +176,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                               bottomLeft: Radius.circular(25),
                                               bottomRight: Radius.circular(25),
                                             ),
-                                            child: contextCtrl.categoryList[index].image!=null&& contextCtrl.categoryList[index].image!=""
+                                            child: contextCtrl.categoryList[index].image != null && contextCtrl.categoryList[index].image != ""
                                                 ? CachedNetworkImage(
                                                     errorWidget: (context, url, error) => Image.asset(
                                                       coachImg,
@@ -231,6 +224,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       onTap: () {
         Get.to(() => CoachesListScreen(
               categoryId: list.id.toString(),
+              city: '',
             ));
       },
       child: Container(

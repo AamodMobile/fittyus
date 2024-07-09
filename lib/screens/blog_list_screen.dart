@@ -137,14 +137,18 @@ class _BlogListScreenState extends State<BlogListScreen> {
   myBlogListTile(BlogList list) {
     return InkWell(
       onTap: () {
-        Get.to(() => BlogDetailsScreen(blogId: list.id.toString()));
+        Get.to(
+              () => BlogDetailsScreen(
+            blogId: list.id.toString(),
+          ),
+        );
       },
       child: Container(
-        margin: const EdgeInsets.only(top: 3),
-        padding: const EdgeInsets.all(10),
+        margin: const EdgeInsets.only(top: 8),
+        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: whiteColor,
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(15),
           boxShadow: [
             BoxShadow(
               offset: const Offset(0, 1),
@@ -157,82 +161,53 @@ class _BlogListScreenState extends State<BlogListScreen> {
         child: Column(
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      height: 30,
-                      width: 30,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: list.profileImage!=null&&list.profileImage!=""
-                            ? CachedNetworkImage(
-                                errorWidget: (context, url, error) => Image.asset(
-                                  defaultUser,
-                                  fit: BoxFit.cover,
-                                ),
-                                fit: BoxFit.cover,
-                                imageUrl: ApiUrl.imageBaseUrl + list.profileImage.toString(),
-                                placeholder: (a, b) => const Center(
-                                  child: CircularProgressIndicator(
-                                    color: mainColor,
-                                  ),
-                                ),
-                              )
-                            : Image.asset(
-                                defaultUser,
-                                fit: BoxFit.cover,
-                              ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.50,
-                      child: Text(
-                        list.firstName.toString(),
-                        style: TextStyle(color: mainColor, fontFamily: semiBold, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font14),
-                      ),
-                    ),
-                  ],
-                ),
-                Text(
-                  list.date.toString(),
-                  style: TextStyle(
-                    color: lightGreyTxt,
-                    fontFamily: regular,
-                    fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.normal,
-                    fontSize: Dimensions.font14 - 4,
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Container(
+                  height: 104,
+                  width: 106,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: list.image.toString().isNotEmpty
+                        ? CachedNetworkImage(
+                      errorWidget: (context, url, error) => Image.asset(
+                        demoImg,
+                        fit: BoxFit.cover,
+                      ),
+                      fit: BoxFit.cover,
+                      imageUrl: ApiUrl.imageBaseUrl + list.image.toString(),
+                      placeholder: (a, b) => const Center(
+                        child: CircularProgressIndicator(
+                          color: mainColor,
+                        ),
+                      ),
+                    )
+                        : Image.asset(
+                      demoImg,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
                 Expanded(
                   child: Column(
                     children: [
-                      Html(
-                        data: list.description.toString(),
-                        style: {
-                          "body": Style(
-                            fontSize: FontSize(Dimensions.font14),
-                            color: mainColor,
-                            fontFamily: semiBold,
-                            fontWeight: FontWeight.w500,
-                            fontStyle: FontStyle.normal,
-                            maxLines: 2,
-                          ),
-                        },
+                      Text(
+                        list.title.toString(),
+                        maxLines: 2,
+                        style: TextStyle(
+                          overflow: TextOverflow.ellipsis,
+                          color: mainColor,
+                          fontFamily: semiBold,
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.normal,
+                          fontSize: Dimensions.font14,
+                        ),
                       ),
+                      const SizedBox(height: 5,),
                       Text(
                         list.shortDescription.toString(),
                         maxLines: 2,
@@ -245,38 +220,24 @@ class _BlogListScreenState extends State<BlogListScreen> {
                           fontSize: Dimensions.font14 - 4,
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-                Container(
-                  height: 104,
-                  width: 106,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: list.image.toString().isNotEmpty
-                        ? CachedNetworkImage(
-                            errorWidget: (context, url, error) => Image.asset(
-                              demoImg,
-                              fit: BoxFit.cover,
+                      const SizedBox(height: 5,),
+                      Row(
+                        children: [
+                          Text(
+                            "Posted : ${list.date}",
+                            maxLines: 2,
+                            style: TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              color: lightGreyTxt,
+                              fontFamily: regular,
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.normal,
+                              fontSize: Dimensions.font14 - 4,
                             ),
-                            fit: BoxFit.cover,
-                            imageUrl: ApiUrl.imageBaseUrl + list.image.toString(),
-                            placeholder: (a, b) => const Center(
-                              child: CircularProgressIndicator(
-                                color: mainColor,
-                              ),
-                            ),
-                          )
-                        : Image.asset(
-                            demoImg,
-                            fit: BoxFit.cover,
                           ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -300,16 +261,16 @@ class _BlogListScreenState extends State<BlogListScreen> {
                       children: [
                         list.isBlogLike.toString() == "0"
                             ? Image.asset(
-                                likeIc,
-                                height: 16,
-                                width: 16,
-                              )
+                          likeIc,
+                          height: 16,
+                          width: 16,
+                        )
                             : Image.asset(
-                                likeIc,
-                                height: 16,
-                                width: 16,
-                                color: Colors.blue,
-                              ),
+                          likeIc,
+                          height: 16,
+                          width: 16,
+                          color: Colors.blue,
+                        ),
                         const SizedBox(
                           width: 14,
                         ),
@@ -317,7 +278,12 @@ class _BlogListScreenState extends State<BlogListScreen> {
                           "like ${list.blogCount.toString()}",
                           maxLines: 2,
                           style: TextStyle(
-                              overflow: TextOverflow.ellipsis, color: mainColor, fontFamily: regular, fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 4),
+                              overflow: TextOverflow.ellipsis,
+                              color: mainColor,
+                              fontFamily: regular,
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.normal,
+                              fontSize: Dimensions.font14 - 4),
                         )
                       ],
                     ),
@@ -328,7 +294,10 @@ class _BlogListScreenState extends State<BlogListScreen> {
                 ),
                 InkWell(
                   onTap: () {
-                    Get.to(() => CommentListScreen(blogId: list.id.toString(), blogTitle: list.title.toString()));
+                    Get.to(() => CommentListScreen(
+                      blogId: list.id.toString(),
+                      blogTitle: list.title.toString(),
+                    ));
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -350,7 +319,12 @@ class _BlogListScreenState extends State<BlogListScreen> {
                           "Com.${list.commentsCount.toString()}",
                           maxLines: 2,
                           style: TextStyle(
-                              overflow: TextOverflow.ellipsis, color: mainColor, fontFamily: regular, fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 4),
+                              overflow: TextOverflow.ellipsis,
+                              color: mainColor,
+                              fontFamily: regular,
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.normal,
+                              fontSize: Dimensions.font14 - 4),
                         )
                       ],
                     ),
@@ -376,9 +350,7 @@ class _BlogListScreenState extends State<BlogListScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  width: 6,
-                ),
+                const SizedBox(width: 6),
                 InkWell(
                   onTap: () async {
                     await launchUrl(
@@ -391,9 +363,7 @@ class _BlogListScreenState extends State<BlogListScreen> {
                     height: 24,
                     width: 24,
                     decoration: BoxDecoration(color: greenWhats, borderRadius: BorderRadius.circular(3)),
-                    child: Image.asset(
-                      whatsAppIc,
-                    ),
+                    child: Image.asset(whatsAppIc),
                   ),
                 ),
               ],

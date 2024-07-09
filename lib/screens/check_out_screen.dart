@@ -357,40 +357,85 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                               ? const SizedBox()
                               : Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 15),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  child: Column(
                                     children: [
                                       Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Image.asset(
-                                            offerIc,
-                                            height: 15,
-                                            width: 15,
+                                          Row(
+                                            children: [
+                                              Image.asset(
+                                                offerIc,
+                                                height: 15,
+                                                width: 15,
+                                              ),
+                                              const SizedBox(
+                                                width: 7,
+                                              ),
+                                              Text(
+                                                "Apply Code",
+                                                style: TextStyle(color: subPrimaryCl, fontFamily: semiBold, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 2),
+                                              ),
+                                            ],
                                           ),
-                                          const SizedBox(
-                                            width: 7,
-                                          ),
-                                          Text(
-                                            "Apply Code",
-                                            style: TextStyle(color: subPrimaryCl, fontFamily: semiBold, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 2),
+                                          InkWell(
+                                            onTap: () {
+                                              Get.to(() => const OfferScreen());
+                                            },
+                                            child: Text(
+                                              "View Offers",
+                                              style: TextStyle(
+                                                color: pGreen,
+                                                fontFamily: medium,
+                                                fontWeight: FontWeight.w500,
+                                                fontStyle: FontStyle.normal,
+                                                fontSize: Dimensions.font14,
+                                              ),
+                                            ),
                                           ),
                                         ],
                                       ),
-                                      InkWell(
-                                        onTap: () {
-                                          Get.to(() => const OfferScreen());
-                                        },
-                                        child: Text(
-                                          "View Offers",
-                                          style: TextStyle(
-                                            color: pGreen,
-                                            fontFamily: medium,
-                                            fontWeight: FontWeight.w500,
-                                            fontStyle: FontStyle.normal,
-                                            fontSize: Dimensions.font14,
-                                          ),
-                                        ),
-                                      ),
+                                      contextCtrl.checkOutData.value.packageDetail!.couponCode != ""
+                                          ? Column(
+                                              children: [
+                                                const SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Expanded(
+                                                      child: Text(
+                                                        "Coupon code Apply :- ${contextCtrl.checkOutData.value.packageDetail!.couponCode.toString()}",
+                                                        style: TextStyle(
+                                                          color: subPrimaryCl,
+                                                          fontFamily: semiBold,
+                                                          fontWeight: FontWeight.w500,
+                                                          fontStyle: FontStyle.normal,
+                                                          fontSize: Dimensions.font14 - 2,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    InkWell(
+                                                      onTap: () {
+                                                        Get.find<CheckOutController>().checkOutDetails("", "");
+                                                      },
+                                                      child: Text(
+                                                        "Clear",
+                                                        style: TextStyle(
+                                                          color: redColor,
+                                                          fontFamily: medium,
+                                                          fontWeight: FontWeight.w500,
+                                                          fontStyle: FontStyle.normal,
+                                                          fontSize: Dimensions.font14,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            )
+                                          : SizedBox(),
                                     ],
                                   ),
                                 ),
@@ -606,136 +651,148 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                       width: MediaQuery.of(context).size.width,
                       child: MyButton(
                         onPressed: () {
-                          if (controller.addressList.isNotEmpty) {
-                            controller.bookingType = widget.sessionType == "single" ? "single" : "category";
+                          if (contextCtrl.addressList.isNotEmpty) {
+                            contextCtrl.bookingType = widget.sessionType == "single" ? "single" : "category";
                             contextCtrl.checkOutData.value.packageDetail != null && contextCtrl.checkOutData.value.packageDetail != ""
-                                ? controller.couponCode = contextCtrl.checkOutData.value.packageDetail!.couponCode != null && contextCtrl.checkOutData.value.packageDetail!.couponCode != ""
+                                ? contextCtrl.couponCode = contextCtrl.checkOutData.value.packageDetail!.couponCode != null && contextCtrl.checkOutData.value.packageDetail!.couponCode != ""
                                     ? contextCtrl.checkOutData.value.packageDetail!.couponCode.toString()
                                     : ""
                                 : "";
                             contextCtrl.checkOutData.value.packageDetail != null && contextCtrl.checkOutData.value.packageDetail != ""
-                                ? controller.amount =
+                                ? contextCtrl.amount =
                                     contextCtrl.checkOutData.value.packageDetail!.originalTotalAmount != null && contextCtrl.checkOutData.value.packageDetail!.originalTotalAmount != ""
                                         ? contextCtrl.checkOutData.value.packageDetail!.originalTotalAmount.toString()
                                         : ""
                                 : "";
-                            showModalBottomSheet(
-                                backgroundColor: whiteColor,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                context: context,
-                                builder: (BuildContext builderContext) {
-                                  return StatefulBuilder(builder: (BuildContext context, StateSetter setState /*You can rename this!*/) {
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-                                          const Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              "Select Payment Type",
-                                              style: TextStyle(color: Colors.black, fontSize: 16, fontFamily: semiBold, fontWeight: FontWeight.w400, fontStyle: FontStyle.normal),
-                                            ),
-                                          ),
-                                          Row(
-                                            children: [
-                                              Radio(
-                                                fillColor: MaterialStateColor.resolveWith((states) => mainColor),
-                                                activeColor: mainColor,
-                                                value: 0,
-                                                groupValue: paymentType,
-                                                onChanged: (val) {
-                                                  setState(() {
-                                                    paymentType = 0;
-                                                    radioButtonItem = "razorpay";
-                                                  });
-                                                },
-                                              ),
-                                              const Text(
-                                                "Razorpay",
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.black,
-                                                  fontFamily: medium,
-                                                  fontWeight: FontWeight.w400,
+                            if (contextCtrl.checkOutData.value.packageDetail!.totalAmount.toString() == "0.00") {
+                              contextCtrl.completeBooking(contextCtrl.checkOutData.value.id.toString(), contextCtrl.couponCode, contextCtrl.bookingType, "Online");
+                            } else {
+                              showModalBottomSheet(
+                                  backgroundColor: whiteColor,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                  context: context,
+                                  builder: (BuildContext builderContext) {
+                                    return StatefulBuilder(builder: (BuildContext context, StateSetter setState /*You can rename this!*/) {
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                                        child: Wrap(
+                                          children: [
+                                            Column(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              crossAxisAlignment: CrossAxisAlignment.end,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                const SizedBox(
+                                                  height: 20,
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Radio(
-                                                fillColor: MaterialStateColor.resolveWith((states) => mainColor),
-                                                activeColor: mainColor,
-                                                value: 1,
-                                                groupValue: paymentType,
-                                                onChanged: (val) {
-                                                  setState(() {
-                                                    paymentType = 1;
-                                                    radioButtonItem = "paytm";
-                                                  });
-                                                },
-                                              ),
-                                              const Text(
-                                                "Paytm",
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.black,
-                                                  fontFamily: medium,
-                                                  fontWeight: FontWeight.w400,
+                                                const Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Text(
+                                                    "Select Payment Type",
+                                                    style: TextStyle(color: Colors.black, fontSize: 16, fontFamily: semiBold, fontWeight: FontWeight.w400, fontStyle: FontStyle.normal),
+                                                  ),
                                                 ),
-                                              )
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          MyButton(
-                                              onPressed: () {
-                                                if (paymentType == null) {
-                                                  errorToast("SELECT PAYMENT TYPE");
-                                                } else {
-                                                  if (paymentType == 0) {
-                                                    controller.sendOrderRazor(
-                                                      contextCtrl.checkOutData.value.packageDetail != null && contextCtrl.checkOutData.value.packageDetail != ""
-                                                          ? " ${contextCtrl.checkOutData.value.packageDetail!.totalAmount.toString()}"
-                                                          : "",
-                                                      contextCtrl.addressList[0].email.toString(),
-                                                      contextCtrl.addressList[0].mobile.toString(),
-                                                    );
-                                                  } else {
-                                                    controller.startTransaction();
-                                                  }
-                                                }
-                                              },
-                                              color: pGreen,
-                                              child: Center(
-                                                child: RichText(
-                                                  text: TextSpan(
-                                                    text: "Pay Now",
-                                                    style: TextStyle(color: whiteColor, fontFamily: semiBold, fontWeight: FontWeight.w600, fontStyle: FontStyle.normal, fontSize: Dimensions.font14),
+                                                Row(
+                                                  children: [
+                                                    Radio(
+                                                      fillColor: MaterialStateColor.resolveWith((states) => mainColor),
+                                                      activeColor: mainColor,
+                                                      value: 0,
+                                                      groupValue: paymentType,
+                                                      onChanged: (val) {
+                                                        setState(() {
+                                                          paymentType = 0;
+                                                          radioButtonItem = "razorpay";
+                                                        });
+                                                      },
+                                                    ),
+                                                    const Text(
+                                                      "Razorpay",
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                        color: Colors.black,
+                                                        fontFamily: medium,
+                                                        fontWeight: FontWeight.w400,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Visibility(
+                                                  visible: false,
+                                                  child: Row(
                                                     children: [
-                                                      TextSpan(
-                                                          text: contextCtrl.checkOutData.value.packageDetail != null && contextCtrl.checkOutData.value.packageDetail != ""
-                                                              ? " ₹ ${contextCtrl.checkOutData.value.packageDetail!.totalAmount.toString()}"
-                                                              : "")
+                                                      Radio(
+                                                        fillColor: MaterialStateColor.resolveWith((states) => mainColor),
+                                                        activeColor: mainColor,
+                                                        value: 1,
+                                                        groupValue: paymentType,
+                                                        onChanged: (val) {
+                                                          setState(() {
+                                                            paymentType = 1;
+                                                            radioButtonItem = "paytm";
+                                                          });
+                                                        },
+                                                      ),
+                                                      const Text(
+                                                        "Paytm",
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                          color: Colors.black,
+                                                          fontFamily: medium,
+                                                          fontWeight: FontWeight.w400,
+                                                        ),
+                                                      )
                                                     ],
                                                   ),
                                                 ),
-                                              )),
-                                          const SizedBox(
-                                            height: 70,
-                                          )
-                                        ],
-                                      ),
-                                    );
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                MyButton(
+                                                    onPressed: () {
+                                                      if (paymentType == null) {
+                                                        errorToast("SELECT PAYMENT TYPE");
+                                                      } else {
+                                                        if (paymentType == 0) {
+                                                          controller.sendOrderRazor(
+                                                            contextCtrl.checkOutData.value.packageDetail != null && contextCtrl.checkOutData.value.packageDetail != ""
+                                                                ? " ${contextCtrl.checkOutData.value.packageDetail!.totalAmount.toString()}"
+                                                                : "",
+                                                            contextCtrl.addressList[0].email.toString(),
+                                                            contextCtrl.addressList[0].mobile.toString(),
+                                                          );
+                                                        } else {
+                                                          controller.startTransaction();
+                                                        }
+                                                      }
+                                                    },
+                                                    color: pGreen,
+                                                    child: Center(
+                                                      child: RichText(
+                                                        text: TextSpan(
+                                                          text: "Pay Now",
+                                                          style:
+                                                              TextStyle(color: whiteColor, fontFamily: semiBold, fontWeight: FontWeight.w600, fontStyle: FontStyle.normal, fontSize: Dimensions.font14),
+                                                          children: [
+                                                            TextSpan(
+                                                                text: contextCtrl.checkOutData.value.packageDetail != null && contextCtrl.checkOutData.value.packageDetail != ""
+                                                                    ? " ₹ ${contextCtrl.checkOutData.value.packageDetail!.totalAmount.toString()}"
+                                                                    : "")
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    )),
+                                                const SizedBox(
+                                                  height: 30,
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    });
                                   });
-                                });
+                            }
                           } else {
                             errorToast("Add Address Details First");
                             Get.to(() => BillingDetailsScreen(isEdit: false));

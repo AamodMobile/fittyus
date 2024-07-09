@@ -3,7 +3,7 @@ import 'package:fittyus/constants/constants.dart';
 import 'package:fittyus/controller/search_controller.dart';
 import 'package:fittyus/screens/challenge_details_screen.dart';
 import 'package:fittyus/screens/coach_details_screen.dart';
-import 'package:fittyus/screens/coachs_list_screen.dart';
+import 'package:fittyus/screens/coaches_list_screen.dart';
 import 'package:fittyus/screens/new_profile_screen.dart';
 import 'package:fittyus/screens/training_session_details_screen.dart';
 import 'package:fittyus/services/api_url.dart';
@@ -35,7 +35,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     selectedType = widget.type;
-    controller.isData=false;
+    controller.isData = false;
     controller.sessionList.clear();
     controller.usersList.clear();
     controller.teacherList.clear();
@@ -48,7 +48,9 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return GetBuilder(
         init: Get.find<UserSearchController>(),
-        initState: (state) {},
+        initState: (state) {
+          Get.find<UserSearchController>().getCurrentPosition();
+        },
         builder: (contCtr) {
           return SafeArea(
             child: Scaffold(
@@ -85,39 +87,38 @@ class _SearchScreenState extends State<SearchScreen> {
                       const SizedBox(
                         width: 12,
                       ),
-                      const SizedBox(
-                        width: 12,
-                      ),
-                      SizedBox(
-                        height: 40,
-                        width: MediaQuery.of(context).size.width * 0.65,
-                        child: TextFormField(
-                          controller: search,
-                          autofocus: false,
-                          maxLines: 1,
-                          maxLength: 12,
-                          textInputAction: TextInputAction.search,
-                          onChanged: (v) {
-                            setState(() {
-                              search.text = v;
-                              if (search.text.length > 3) {
-                                contCtr.searchApi(v);
-                              }
-                            });
-                          },
-                          onEditingComplete: () {
-                            FocusScope.of(context).requestFocus(FocusNode());
-                            setState(() {
-                              contCtr.searchApi(search.text);
-                            });
-                          },
-                          decoration: const InputDecoration(
-                            counterText: "",
-                            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
+                      Expanded(
+                        child: SizedBox(
+                          height: 40,
+                          width: MediaQuery.of(context).size.width * 0.65,
+                          child: TextFormField(
+                            controller: search,
+                            autofocus: false,
+                            maxLines: 1,
+                            maxLength: 12,
+                            textInputAction: TextInputAction.search,
+                            onChanged: (v) {
+                              setState(() {
+                                search.text = v;
+                                if (search.text.length > 3) {
+                                  contCtr.searchApi(v,true);
+                                }
+                              });
+                            },
+                            onEditingComplete: () {
+                              FocusScope.of(context).requestFocus(FocusNode());
+                              setState(() {
+                                contCtr.searchApi(search.text,true);
+                              });
+                            },
+                            decoration: const InputDecoration(
+                              counterText: "",
+                              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: grayNew),
+                              ),
+                              hintText: "Search",
                             ),
-                            hintText: "Search",
                           ),
                         ),
                       ),
@@ -398,7 +399,11 @@ class _SearchScreenState extends State<SearchScreen> {
                                                         return InkWell(
                                                           onTap: () {
                                                             FocusScope.of(context).requestFocus(FocusNode());
-                                                            Get.to(() => CoachesListScreen(categoryId: controller.categoryList[index].id.toString()));
+                                                            if (controller.city.value == "") {
+                                                              controller.getCurrentPosition();
+                                                            } else {
+                                                              Get.to(() => CoachesListScreen(city: controller.city.value, categoryId: controller.categoryList[index].id.toString()));
+                                                            }
                                                           },
                                                           child: Container(
                                                             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
@@ -556,7 +561,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                         return InkWell(
                                                           onTap: () {
                                                             FocusScope.of(context).requestFocus(FocusNode());
-                                                            Get.to(() => TrainingSessionDetailsScreen(list: controller.sessionList[index]));
+                                                            Get.to(() => NewProfileScreen(id: controller.usersList[index].id.toString()));
                                                           },
                                                           child: Container(
                                                             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
@@ -567,7 +572,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                                             child: Row(
                                                               children: [
                                                                 contCtr.usersList[index].profileImage != ""
-                                                                    &&contCtr.usersList[index].profileImage!=null
                                                                     ? CachedNetworkImage(
                                                                         errorWidget: (context, url, error) => Image.asset(
                                                                           bannerImg,
@@ -579,11 +583,12 @@ class _SearchScreenState extends State<SearchScreen> {
                                                                         placeholder: (a, b) => const Center(
                                                                           child: CircularProgressIndicator(),
                                                                         ),
-                                                                      ):Image.asset(
-                                                                  demoImg,
-                                                                  width: 50,
-                                                                  fit: BoxFit.fill,
-                                                                ),
+                                                                      )
+                                                                    : Image.asset(
+                                                                        demoImg,
+                                                                        width: 50,
+                                                                        fit: BoxFit.fill,
+                                                                      ),
                                                                 const SizedBox(width: 15),
                                                                 Expanded(
                                                                   child: Column(
@@ -621,6 +626,13 @@ class _SearchScreenState extends State<SearchScreen> {
                                             visible: selectedType == "Challenge" ? true : false,
                                             child: Column(
                                               children: [
+                                                contCtr.allChallengeList.isEmpty?SizedBox(
+                                            width: Dimensions.screenWidth,
+                                              height: Dimensions.screenHeight - 200,
+                                              child: Image.asset(
+                                                noData,
+                                                fit: BoxFit.contain,
+                                              )):
                                                 MediaQuery.removePadding(
                                                   context: context,
                                                   removeTop: true,
@@ -686,11 +698,18 @@ class _SearchScreenState extends State<SearchScreen> {
                                                   ),
                                                 )
                                               ],
-                                            )),
+                                            ),),
                                         Visibility(
                                             visible: selectedType == "Coach" ? true : false,
                                             child: Column(
                                               children: [
+                                                contCtr.teacherList.isEmpty?SizedBox(
+                                                    width: Dimensions.screenWidth,
+                                                    height: Dimensions.screenHeight - 200,
+                                                    child: Image.asset(
+                                                      noData,
+                                                      fit: BoxFit.contain,
+                                                    )):
                                                 MediaQuery.removePadding(
                                                   context: context,
                                                   removeTop: true,
@@ -761,6 +780,13 @@ class _SearchScreenState extends State<SearchScreen> {
                                             visible: selectedType == "Category" ? true : false,
                                             child: Column(
                                               children: [
+                                                contCtr.categoryList.isEmpty?SizedBox(
+                                                    width: Dimensions.screenWidth,
+                                                    height: Dimensions.screenHeight - 200,
+                                                    child: Image.asset(
+                                                      noData,
+                                                      fit: BoxFit.contain,
+                                                    )):
                                                 MediaQuery.removePadding(
                                                   context: context,
                                                   removeTop: true,
@@ -773,7 +799,11 @@ class _SearchScreenState extends State<SearchScreen> {
                                                       return InkWell(
                                                         onTap: () {
                                                           FocusScope.of(context).requestFocus(FocusNode());
-                                                          Get.to(() => CoachesListScreen(categoryId: controller.categoryList[index].id.toString()));
+                                                          if (controller.city.value == "") {
+                                                            controller.getCurrentPosition();
+                                                          } else {
+                                                            Get.to(() => CoachesListScreen(city: controller.city.value, categoryId: controller.categoryList[index].id.toString()));
+                                                          }
                                                         },
                                                         child: Container(
                                                           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
@@ -833,6 +863,13 @@ class _SearchScreenState extends State<SearchScreen> {
                                           visible: selectedType == "Session" ? true : false,
                                           child: Column(
                                             children: [
+                                              contCtr.sessionList.isEmpty?SizedBox(
+                                                  width: Dimensions.screenWidth,
+                                                  height: Dimensions.screenHeight - 200,
+                                                  child: Image.asset(
+                                                    noData,
+                                                    fit: BoxFit.contain,
+                                                  )):
                                               MediaQuery.removePadding(
                                                 context: context,
                                                 removeTop: true,
@@ -908,6 +945,13 @@ class _SearchScreenState extends State<SearchScreen> {
                                           visible: selectedType == "Customer Profile" ? true : false,
                                           child: Column(
                                             children: [
+                                              contCtr.usersList.isEmpty?SizedBox(
+                                                  width: Dimensions.screenWidth,
+                                                  height: Dimensions.screenHeight - 200,
+                                                  child: Image.asset(
+                                                    noData,
+                                                    fit: BoxFit.contain,
+                                                  )):
                                               MediaQuery.removePadding(
                                                 context: context,
                                                 removeTop: true,
@@ -931,23 +975,23 @@ class _SearchScreenState extends State<SearchScreen> {
                                                         child: Row(
                                                           children: [
                                                             contCtr.usersList[index].profileImage != ""
-                                                                &&contCtr.usersList[index].profileImage!=null
                                                                 ? CachedNetworkImage(
-                                                              errorWidget: (context, url, error) => Image.asset(
-                                                                bannerImg,
-                                                                fit: BoxFit.fill,
-                                                              ),
-                                                              fit: BoxFit.fill,
-                                                              width: 50,
-                                                              imageUrl: contCtr.usersList[index].profileImage.toString(),
-                                                              placeholder: (a, b) => const Center(
-                                                                child: CircularProgressIndicator(),
-                                                              ),
-                                                            ):Image.asset(
-                                                              demoImg,
-                                                              width: 50,
-                                                              fit: BoxFit.fill,
-                                                            ),
+                                                                    errorWidget: (context, url, error) => Image.asset(
+                                                                      bannerImg,
+                                                                      fit: BoxFit.fill,
+                                                                    ),
+                                                                    fit: BoxFit.fill,
+                                                                    width: 50,
+                                                                    imageUrl: contCtr.usersList[index].profileImage.toString(),
+                                                                    placeholder: (a, b) => const Center(
+                                                                      child: CircularProgressIndicator(),
+                                                                    ),
+                                                                  )
+                                                                : Image.asset(
+                                                                    demoImg,
+                                                                    width: 50,
+                                                                    fit: BoxFit.fill,
+                                                                  ),
                                                             const SizedBox(width: 15),
                                                             Expanded(
                                                               child: Column(
@@ -984,27 +1028,14 @@ class _SearchScreenState extends State<SearchScreen> {
                                   ),
                                 );
                               })
-                            : SingleChildScrollView(
-                                child: SizedBox(
-                                  width: Dimensions.screenWidth,
-                                  height: Dimensions.screenHeight - 700,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'No  Data',
-                                        style: TextStyle(
-                                          color: mainColor,
-                                          fontSize: Dimensions.font16 + 2,
-                                          fontFamily: regular,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                            : SizedBox(
+                                width: Dimensions.screenWidth,
+                                height: Dimensions.screenHeight - 200,
+                                child: Image.asset(
+                                  noData,
+                                  fit: BoxFit.contain,
                                 ),
-                              ),
+                              )
                   ],
                 );
               }),

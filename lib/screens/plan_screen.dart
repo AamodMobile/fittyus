@@ -5,6 +5,7 @@ import 'package:fittyus/constants/constants.dart';
 import 'package:fittyus/controller/coach_plan_details_controller.dart';
 import 'package:fittyus/services/api_url.dart';
 import 'package:fittyus/widgets/my_button.dart';
+import 'package:flutter/cupertino.dart';
 
 class PlanScreen extends StatefulWidget {
   final String coachId;
@@ -33,30 +34,18 @@ class _PlanScreenState extends State<PlanScreen> {
     return GetBuilder(
       init: Get.find<CoachPlansDetailsController>(),
       initState: (state) {
-        Get.find<CoachPlansDetailsController>()
-            .getCoachPlanDetailsListApi(widget.coachId);
+        Get.find<CoachPlansDetailsController>().getCoachPlanDetailsListApi(widget.coachId);
       },
       builder: (contextCtrl) {
         return SafeArea(
           child: Scaffold(
             backgroundColor: whiteColor,
-            appBar:
-            PreferredSize(
-              preferredSize: Size(Dimensions.height90,MediaQuery.of(context).size.width),
+            appBar: PreferredSize(
+              preferredSize: Size(Dimensions.height90, MediaQuery.of(context).size.width),
               child: Container(
-                height: Dimensions.height45+Dimensions.height20,
+                height: Dimensions.height45 + Dimensions.height20,
                 padding: const EdgeInsets.symmetric(horizontal: 15),
-                decoration: const BoxDecoration(
-                    color: whiteColor,
-                    boxShadow: [
-                      BoxShadow(
-                          offset: Offset(0,1),
-                          blurRadius: 15,
-                          spreadRadius: 0,
-                          color: Color.fromRGBO(0, 0, 0, 0.2)
-                      )
-                    ]
-                ),
+                decoration: const BoxDecoration(color: whiteColor, boxShadow: [BoxShadow(offset: Offset(0, 1), blurRadius: 15, spreadRadius: 0, color: Color.fromRGBO(0, 0, 0, 0.2))]),
                 child: Row(
                   children: [
                     SizedBox(
@@ -78,12 +67,7 @@ class _PlanScreenState extends State<PlanScreen> {
                     ),
                     Text(
                       "Plan",
-                      style: TextStyle(
-                          color: mainColor,
-                          fontFamily: semiBold,
-                          fontWeight: FontWeight.w500,
-                          fontStyle: FontStyle.normal,
-                          fontSize: Dimensions.font16),
+                      style: TextStyle(color: mainColor, fontFamily: semiBold, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font16),
                     ),
                     const Spacer(),
                     Visibility(
@@ -133,11 +117,7 @@ class _PlanScreenState extends State<PlanScreen> {
                       children: [
                         Text(
                           'No Details Found',
-                          style: TextStyle(
-                              color: mainColor,
-                              fontSize: Dimensions.font16 + 2,
-                              fontFamily: regular,
-                              fontWeight: FontWeight.w600),
+                          style: TextStyle(color: mainColor, fontSize: Dimensions.font16 + 2, fontFamily: regular, fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),
@@ -150,8 +130,7 @@ class _PlanScreenState extends State<PlanScreen> {
                       height: 15,
                     ),
                     Container(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 5),
+                      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                         color: const Color.fromRGBO(244, 244, 244, 1),
@@ -210,25 +189,16 @@ class _PlanScreenState extends State<PlanScreen> {
                                     ),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(35),
-                                      child: contextCtrl.coach.value.profileImage !=
-                                                  null &&
-                                              contextCtrl.coach.value.profileImage !=
-                                                  ""
+                                      child: contextCtrl.coach.value.profileImage != null && contextCtrl.coach.value.profileImage != ""
                                           ? CachedNetworkImage(
-                                              errorWidget:
-                                                  (context, url, error) =>
-                                                      Image.asset(
+                                              errorWidget: (context, url, error) => Image.asset(
                                                 certificateImg,
                                                 fit: BoxFit.fill,
                                               ),
                                               fit: BoxFit.fill,
-                                              imageUrl: ApiUrl.imageBaseUrl +
-                                                  contextCtrl.coach.value.profileImage
-                                                      .toString(),
-                                              placeholder: (a, b) =>
-                                                  const Center(
-                                                child:
-                                                    CircularProgressIndicator(
+                                              imageUrl: ApiUrl.imageBaseUrl + contextCtrl.coach.value.profileImage.toString(),
+                                              placeholder: (a, b) => const Center(
+                                                child: CircularProgressIndicator(
                                                   color: mainColor,
                                                 ),
                                               ),
@@ -244,30 +214,16 @@ class _PlanScreenState extends State<PlanScreen> {
                                   ),
                                   Expanded(
                                     child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          contextCtrl.coach.value.name
-                                              .toString(),
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontFamily: semiBold,
-                                              fontWeight: FontWeight.w500,
-                                              fontStyle: FontStyle.normal,
-                                              fontSize: Dimensions.font14),
+                                          contextCtrl.coach.value.name.toString(),
+                                          style: TextStyle(color: Colors.black, fontFamily: semiBold, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font14),
                                         ),
                                         Text(
-                                          contextCtrl.coach.value.coachType
-                                              .toString(),
-                                          style: TextStyle(
-                                              color: lightGreyTxt,
-                                              fontFamily: semiBold,
-                                              fontWeight: FontWeight.w500,
-                                              fontStyle: FontStyle.normal,
-                                              fontSize: Dimensions.font14 - 2),
+                                          contextCtrl.coach.value.coachType.toString(),
+                                          style: TextStyle(color: lightGreyTxt, fontFamily: semiBold, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 2),
                                         ),
                                       ],
                                     ),
@@ -276,15 +232,10 @@ class _PlanScreenState extends State<PlanScreen> {
                                     margin: const EdgeInsets.only(right: 10),
                                     height: 14,
                                     width: 36,
-                                    decoration: BoxDecoration(
-                                        color: mainColor,
-                                        borderRadius:
-                                            BorderRadius.circular(18)),
+                                    decoration: BoxDecoration(color: mainColor, borderRadius: BorderRadius.circular(18)),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         const Icon(
                                           Icons.star,
@@ -295,9 +246,7 @@ class _PlanScreenState extends State<PlanScreen> {
                                           width: 2,
                                         ),
                                         Text(
-                                          contextCtrl
-                                              .coachDetails.value.avgRating
-                                              .toString(),
+                                          contextCtrl.coachDetails.value.avgRating.toString(),
                                           style: const TextStyle(
                                             color: whiteColor,
                                             fontSize: 8,
@@ -323,12 +272,7 @@ class _PlanScreenState extends State<PlanScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 18.0),
                       child: Text(
                         "Select Plan",
-                        style: TextStyle(
-                            color: mainColor,
-                            fontFamily: semiBold,
-                            fontWeight: FontWeight.w500,
-                            fontStyle: FontStyle.normal,
-                            fontSize: Dimensions.font16),
+                        style: TextStyle(color: mainColor, fontFamily: semiBold, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font16),
                       ),
                     ),
                     const SizedBox(
@@ -347,9 +291,7 @@ class _PlanScreenState extends State<PlanScreen> {
                             height: 200,
                             width: 150,
                             decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage(selectPlanImg),
-                                  fit: BoxFit.cover),
+                              image: DecorationImage(image: AssetImage(selectPlanImg), fit: BoxFit.cover),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -360,19 +302,11 @@ class _PlanScreenState extends State<PlanScreen> {
                                   child: Container(
                                     height: 16,
                                     width: 70,
-                                    decoration: BoxDecoration(
-                                        color: const Color.fromRGBO(
-                                            244, 244, 244, 1),
-                                        borderRadius: BorderRadius.circular(3)),
+                                    decoration: BoxDecoration(color: const Color.fromRGBO(244, 244, 244, 1), borderRadius: BorderRadius.circular(3)),
                                     child: Center(
                                       child: Text(
                                         "BestSeller",
-                                        style: TextStyle(
-                                            color: lightGreyTxt,
-                                            fontStyle: FontStyle.normal,
-                                            fontFamily: medium,
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: Dimensions.font14 - 4),
+                                        style: TextStyle(color: lightGreyTxt, fontStyle: FontStyle.normal, fontFamily: medium, fontWeight: FontWeight.w400, fontSize: Dimensions.font14 - 4),
                                       ),
                                     ),
                                   ),
@@ -381,16 +315,10 @@ class _PlanScreenState extends State<PlanScreen> {
                                   height: 10,
                                 ),
                                 Text(
-                                  contextCtrl.plansList[index].options
-                                      .toString(),
+                                  contextCtrl.plansList[index].options.toString(),
                                   maxLines: 2,
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: const Color(0xFF1B63CE),
-                                      fontFamily: medium,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: Dimensions.font14 - 2),
+                                  style: TextStyle(color: const Color(0xFF1B63CE), fontFamily: medium, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 2),
                                 ),
                                 const SizedBox(
                                   height: 5,
@@ -399,15 +327,9 @@ class _PlanScreenState extends State<PlanScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      "${contextCtrl.plansList[index].packagePrice}.0" ==
-                                              contextCtrl
-                                                  .plansList[index].totalAmount
-                                                  .toString()
-                                          ? ""
-                                          : "₹${contextCtrl.plansList[index].packagePrice}",
+                                      "${contextCtrl.plansList[index].packagePrice}.0" == contextCtrl.plansList[index].totalAmount.toString() ? "" : "₹${contextCtrl.plansList[index].packagePrice}",
                                       style: TextStyle(
-                                          decoration:
-                                              TextDecoration.lineThrough,
+                                          decoration: TextDecoration.lineThrough,
                                           color: lightGreyTxt,
                                           fontFamily: regular,
                                           fontWeight: FontWeight.w500,
@@ -419,45 +341,24 @@ class _PlanScreenState extends State<PlanScreen> {
                                     ),
                                     Text(
                                       "₹ ${contextCtrl.plansList[index].totalAmount}",
-                                      style: TextStyle(
-                                          color: mainColor,
-                                          fontFamily: semiBold,
-                                          fontWeight: FontWeight.w500,
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: Dimensions.font14),
+                                      style: TextStyle(color: mainColor, fontFamily: semiBold, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font14),
                                     ),
                                   ],
                                 ),
                                 const SizedBox(
                                   height: 5,
                                 ),
-                                contextCtrl.plansList[index].packageDiscount !=
-                                            null &&
-                                        contextCtrl.plansList[index]
-                                                .packageDiscount !=
-                                            ""
+                                contextCtrl.plansList[index].packageDiscount != null && contextCtrl.plansList[index].packageDiscount != ""
                                     ? Container(
                                         height: 24,
                                         width: 74,
-                                        decoration: BoxDecoration(
-                                            color: const Color.fromRGBO(
-                                                244, 244, 244, 1),
-                                            borderRadius:
-                                                BorderRadius.circular(3)),
+                                        decoration: BoxDecoration(color: const Color.fromRGBO(244, 244, 244, 1), borderRadius: BorderRadius.circular(3)),
                                         child: Center(
                                           child: Text(
-                                            contextCtrl.plansList[index]
-                                                        .discountType ==
-                                                    "Price"
+                                            contextCtrl.plansList[index].discountType == "Price"
                                                 ? "Save ₹${contextCtrl.plansList[index].packageDiscount}"
                                                 : "Save ${contextCtrl.plansList[index].packageDiscount}%",
-                                            style: TextStyle(
-                                                color: greenColorTxt,
-                                                fontStyle: FontStyle.normal,
-                                                fontFamily: medium,
-                                                fontWeight: FontWeight.w400,
-                                                fontSize:
-                                                    Dimensions.font14 - 4),
+                                            style: TextStyle(color: greenColorTxt, fontStyle: FontStyle.normal, fontFamily: medium, fontWeight: FontWeight.w400, fontSize: Dimensions.font14 - 4),
                                           ),
                                         ),
                                       )
@@ -468,141 +369,98 @@ class _PlanScreenState extends State<PlanScreen> {
                                 InkWell(
                                   onTap: () {
                                     showModalBottomSheet(
-                                      backgroundColor: whiteColor,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(8)),
+                                        backgroundColor: whiteColor,
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                                         context: context,
                                         builder: (BuildContext builderContext) {
-                                          return StatefulBuilder(builder:
-                                              (BuildContext context,
-                                                  StateSetter
-                                                      setState /*You can rename this!*/) {
+                                          return StatefulBuilder(builder: (BuildContext context, StateSetter setState /*You can rename this!*/) {
                                             return Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                mainAxisSize:
-                                                    MainAxisSize.min,
+                                              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                                              child: Wrap(
                                                 children: [
-                                                  const SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  const Align(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Text(
-                                                      "Select Time Slot",
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 16,
-                                                          fontFamily:
-                                                              semiBold,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          fontStyle: FontStyle
-                                                              .normal),
-                                                    ),
-                                                  ),
-                                                  const SizedBox(height: 10,),
-                                                  Flexible(
-                                                    child: MediaQuery.removePadding(
-                                                      context: context,
-                                                      removeTop: true,
-                                                      child: ListView.builder(
-                                                        physics: const NeverScrollableScrollPhysics(),
-                                                        scrollDirection: Axis.vertical,
-                                                        itemCount: contextCtrl.coach.value.timeslots!.length,
-                                                          itemBuilder:
-                                                              (BuildContext
-                                                                      context,
-                                                                  int index) {
-                                                        return SizedBox(height: 30,
-                                                          width: MediaQuery.of(context).size.width,
-                                                          child: Row(
-                                                            children: [
-                                                              Radio(
-                                                                fillColor: MaterialStateColor
-                                                                    .resolveWith(
-                                                                        (states) =>
-                                                                            mainColor),
-                                                                activeColor:
-                                                                    mainColor,
-                                                                value: index,
-                                                                groupValue: paymentType,
-                                                                onChanged: (val) {
-                                                                  setState(() {
-                                                                    paymentType = val;
-                                                                    radioButtonItem = contextCtrl.coach.value.timeslots![index].id.toString();
-                                                                  });
-                                                                },
-                                                              ),
-                                                               Text(
-                                                                contextCtrl.coach.value.timeslots![index].timeSlots.toString(),
-                                                                style: const TextStyle(
-                                                                  fontSize: 16,
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontFamily:
-                                                                      medium,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        );
-                                                      }),
-                                                    ),
-                                                  ),
-                                                  MyButton(
-                                                      onPressed: () {
-                                                        if (paymentType ==
-                                                            null) {
-                                                          errorToast(
-                                                              "SELECT time  slot");
-                                                        } else {
-                                                          controller.addToCardPlan(
-                                                              widget.coachId,
-                                                              contextCtrl
-                                                                  .plansList[
-                                                                      index]
-                                                                  .packageId
-                                                                  .toString(),
-                                                              "0",
-                                                              "category",
-                                                          radioButtonItem.toString());
-                                                        }
-                                                      },
-                                                      color: pGreen,
-                                                      child: Center(
-                                                        child: RichText(
-                                                          text: TextSpan(
-                                                            text: "Pay Now",
-                                                            style: TextStyle(
-                                                                color:
-                                                                    whiteColor,
-                                                                fontFamily:
-                                                                    semiBold,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .normal,
-                                                                fontSize:
-                                                                    Dimensions
-                                                                        .font14),
+                                                  SingleChildScrollView(
+                                                    child: Column(
+                                                      mainAxisAlignment: MainAxisAlignment.end,
+                                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: [
+                                                        const SizedBox(
+                                                          height: 20,
+                                                        ),
+                                                        const Align(
+                                                          alignment: Alignment.centerLeft,
+                                                          child: Text(
+                                                            "Select Time Slot",
+                                                            style: TextStyle(color: Colors.black, fontSize: 16, fontFamily: semiBold, fontWeight: FontWeight.w400, fontStyle: FontStyle.normal),
                                                           ),
                                                         ),
-                                                      )),
-                                                  const SizedBox(
-                                                    height: 30,
-                                                  )
+                                                        MediaQuery.removePadding(
+                                                          context: context,
+                                                          removeTop: true,
+                                                          child: ListView.builder(
+                                                              physics: const NeverScrollableScrollPhysics(),
+                                                              scrollDirection: Axis.vertical,
+                                                              shrinkWrap: true,
+                                                              itemCount: contextCtrl.coach.value.timeslots!.length,
+                                                              itemBuilder: (BuildContext context, int index) {
+                                                                return SizedBox(
+                                                                  height: 30,
+                                                                  width: MediaQuery.of(context).size.width,
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Radio(
+                                                                        fillColor: MaterialStateColor.resolveWith((states) => mainColor),
+                                                                        activeColor: mainColor,
+                                                                        value: index,
+                                                                        groupValue: paymentType,
+                                                                        onChanged: (val) {
+                                                                          setState(() {
+                                                                            paymentType = val;
+                                                                            radioButtonItem = contextCtrl.coach.value.timeslots![index].id.toString();
+                                                                          });
+                                                                        },
+                                                                      ),
+                                                                      Text(
+                                                                        contextCtrl.coach.value.timeslots![index].timeSlots.toString(),
+                                                                        style: const TextStyle(
+                                                                          fontSize: 16,
+                                                                          color: Colors.black,
+                                                                          fontFamily: medium,
+                                                                          fontWeight: FontWeight.w400,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                );
+                                                              }),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        MyButton(
+                                                            onPressed: () {
+                                                              if (paymentType == null) {
+                                                                errorToast("SELECT time  slot");
+                                                              } else {
+                                                                controller.addToCardPlan(widget.coachId, contextCtrl.plansList[index].packageId.toString(), "0", "category", radioButtonItem.toString());
+                                                              }
+                                                            },
+                                                            color: pGreen,
+                                                            child: Center(
+                                                              child: RichText(
+                                                                text: TextSpan(
+                                                                  text: "Pay Now",
+                                                                  style: TextStyle(
+                                                                      color: whiteColor, fontFamily: semiBold, fontWeight: FontWeight.w600, fontStyle: FontStyle.normal, fontSize: Dimensions.font14),
+                                                                ),
+                                                              ),
+                                                            )),
+                                                        const SizedBox(
+                                                          height: 30,
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
                                                 ],
                                               ),
                                             );
@@ -626,17 +484,11 @@ class _PlanScreenState extends State<PlanScreen> {
                                       ],
                                     ),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           "Pay Now ₹${contextCtrl.plansList[index].totalAmount}",
-                                          style: TextStyle(
-                                              color: pGreen ,
-                                              fontFamily: medium,
-                                              fontWeight: FontWeight.w400,
-                                              fontStyle: FontStyle.normal,
-                                              fontSize: Dimensions.font14 - 4),
+                                          style: TextStyle(color: pGreen, fontFamily: medium, fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 4),
                                         )
                                       ],
                                     ),
@@ -666,35 +518,21 @@ class _PlanScreenState extends State<PlanScreen> {
                               borderRadius: BorderRadius.circular(1),
                               border: Border.all(color: dividerCl, width: 1),
                             ),
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 7),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 14, vertical: 7),
+                            margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
+                            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       "Plan Details",
-                                      style: TextStyle(
-                                          color: mainColor,
-                                          fontFamily: semiBold,
-                                          fontWeight: FontWeight.w600,
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: Dimensions.font16),
+                                      style: TextStyle(color: mainColor, fontFamily: semiBold, fontWeight: FontWeight.w600, fontStyle: FontStyle.normal, fontSize: Dimensions.font16),
                                     ),
                                     Text(
-                                      contextCtrl.plansList[index].options
-                                          .toString(),
-                                      style: TextStyle(
-                                          color: greenColorTxt,
-                                          fontFamily: medium,
-                                          fontWeight: FontWeight.w600,
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: Dimensions.font14 - 2),
+                                      contextCtrl.plansList[index].options.toString(),
+                                      style: TextStyle(color: greenColorTxt, fontFamily: medium, fontWeight: FontWeight.w600, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 2),
                                     ),
                                   ],
                                 ),
@@ -703,26 +541,14 @@ class _PlanScreenState extends State<PlanScreen> {
                                 ),
                                 Text(
                                   "What is Plan?",
-                                  style: TextStyle(
-                                      color: mainColor,
-                                      fontFamily: semiBold,
-                                      fontWeight: FontWeight.w600,
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: Dimensions.font16),
+                                  style: TextStyle(color: mainColor, fontFamily: semiBold, fontWeight: FontWeight.w600, fontStyle: FontStyle.normal, fontSize: Dimensions.font16),
                                 ),
                                 const SizedBox(
                                   height: 10,
                                 ),
                                 Text(
-                                  contextCtrl
-                                      .plansList[index].packageDescription
-                                      .toString(),
-                                  style: TextStyle(
-                                      color: lightGreyTxt,
-                                      fontFamily: regular,
-                                      fontWeight: FontWeight.w400,
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: Dimensions.font14 - 4),
+                                  contextCtrl.plansList[index].packageDescription.toString(),
+                                  style: TextStyle(color: lightGreyTxt, fontFamily: regular, fontWeight: FontWeight.w400, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 4),
                                 ),
                                 const SizedBox(
                                   height: 30,

@@ -5,6 +5,9 @@ import 'package:fittyus/controller/community_controller.dart';
 import 'package:fittyus/controller/user_controller.dart';
 import 'package:fittyus/services/api_url.dart';
 import 'package:fittyus/widgets/my_button.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import '../widgets/text_filed_widget.dart';
 
@@ -100,9 +103,9 @@ class _CommunityDetailsState extends State<CommunityDetails> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        margin: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.006),
+                        margin: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.006,horizontal: 5),
                         padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.01, vertical: MediaQuery.of(context).size.height * 0.01),
-                        decoration: BoxDecoration(color: whiteColor, borderRadius: BorderRadius.circular(2)),
+                        decoration: BoxDecoration(color: whiteColor, borderRadius: BorderRadius.circular(10),border: Border.all(color: borderColorCont)),
                         child: Column(
                           children: [
                             Padding(
@@ -320,12 +323,52 @@ class _CommunityDetailsState extends State<CommunityDetails> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                InkWell(
-                                  onTap: () {
-                                    controller.communityLike(contextCtr.communityDetails.value.id.toString(), contextCtr.communityDetails.value.isLike.toString() == "0" ? "1" : "0").then((value) {
-                                      user.viewProfile(contextCtr.communityDetails.value.userId.toString(), false);
-                                    });
-                                  },
+                                Expanded(
+                                  child: InkWell(
+                                    onTap: () {
+                                      controller.communityLike(contextCtr.communityDetails.value.id.toString(), contextCtr.communityDetails.value.isLike.toString() == "0" ? "1" : "0").then((value) {
+                                        user.viewProfile(contextCtr.communityDetails.value.userId.toString(), false);
+                                      });
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                      decoration: BoxDecoration(
+                                        color: whiteColor,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          contextCtr.communityDetails.value.isLike.toString() == "0"
+                                              ? Image.asset(
+                                                  heartIc,
+                                                  height: 16,
+                                                  width: 16,
+                                                )
+                                              : Image.asset(
+                                                  heartPinkIc,
+                                                  height: 16,
+                                                  width: 16,
+                                                ),
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            "like ${contextCtr.communityDetails.value.communityCount}",
+                                            maxLines: 2,
+                                            style: TextStyle(
+                                              overflow: TextOverflow.ellipsis,
+                                              color: mainColor,
+                                              fontFamily: regular,
+                                              fontWeight: FontWeight.w400,
+                                              fontStyle: FontStyle.normal,
+                                              fontSize: Dimensions.font14 - 4,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                                     decoration: BoxDecoration(
@@ -333,21 +376,16 @@ class _CommunityDetailsState extends State<CommunityDetails> {
                                       borderRadius: BorderRadius.circular(4),
                                     ),
                                     child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
-                                        contextCtr.communityDetails.value.isLike.toString() == "0"
-                                            ? Image.asset(
-                                                heartIc,
-                                                height: 16,
-                                                width: 16,
-                                              )
-                                            : Image.asset(
-                                                heartPinkIc,
-                                                height: 16,
-                                                width: 16,
-                                              ),
+                                        Image.asset(
+                                          commentNewIc,
+                                          height: 16,
+                                          width: 16,
+                                        ),
                                         const SizedBox(width: 4),
                                         Text(
-                                          "like ${contextCtr.communityDetails.value.communityCount}",
+                                          "Comment",
                                           maxLines: 2,
                                           style: TextStyle(
                                             overflow: TextOverflow.ellipsis,
@@ -362,37 +400,8 @@ class _CommunityDetailsState extends State<CommunityDetails> {
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                  decoration: BoxDecoration(
-                                    color: whiteColor,
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Image.asset(
-                                        commentNewIc,
-                                        height: 16,
-                                        width: 16,
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        "Comment",
-                                        maxLines: 2,
-                                        style: TextStyle(
-                                          overflow: TextOverflow.ellipsis,
-                                          color: mainColor,
-                                          fontFamily: regular,
-                                          fontWeight: FontWeight.w400,
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: Dimensions.font14 - 4,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
                                 Visibility(
-                                  visible: true,
+                                  visible: false,
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                                     decoration: BoxDecoration(
@@ -425,22 +434,25 @@ class _CommunityDetailsState extends State<CommunityDetails> {
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                  decoration: BoxDecoration(
-                                    color: whiteColor,
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                  child: Text(
-                                    "200 Views",
-                                    maxLines: 2,
-                                    style: TextStyle(
-                                      overflow: TextOverflow.ellipsis,
-                                      color: mainColor,
-                                      fontFamily: regular,
-                                      fontWeight: FontWeight.w400,
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: Dimensions.font14 - 4,
+                                Visibility(
+                                  visible: false,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                    decoration: BoxDecoration(
+                                      color: whiteColor,
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: Text(
+                                      "200 Views",
+                                      maxLines: 2,
+                                      style: TextStyle(
+                                        overflow: TextOverflow.ellipsis,
+                                        color: mainColor,
+                                        fontFamily: regular,
+                                        fontWeight: FontWeight.w400,
+                                        fontStyle: FontStyle.normal,
+                                        fontSize: Dimensions.font14 - 4,
+                                      ),
                                     ),
                                   ),
                                 ),

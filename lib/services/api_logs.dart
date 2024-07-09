@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 
 class Log {
@@ -6,7 +8,7 @@ class Log {
   static console(Object? msg) {
     if (isDebug && kDebugMode) {
       if (kDebugMode) {
-        print(msg);
+        log(msg.toString());
       }
     }
   }

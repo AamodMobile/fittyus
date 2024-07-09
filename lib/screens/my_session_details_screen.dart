@@ -389,9 +389,10 @@ class _MySessionDetailsScreenState extends State<MySessionDetailsScreen> {
                             Row(
                               children: [
                                 RatingBar.builder(
-                                  initialRating: double.parse(contextCtrl
+                                  initialRating: contextCtrl
+                                      .mySessionDetails.value.averageRating!=null?double.parse(contextCtrl
                                       .mySessionDetails.value.averageRating
-                                      .toString()),
+                                      .toString()):0,
                                   minRating: 1,
                                   ignoreGestures: true,
                                   direction: Axis.horizontal,

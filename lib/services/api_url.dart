@@ -1,7 +1,7 @@
 class ApiUrl {
   /// Base Url
-  static const String baseUrl = "https://shreekalyanamtravels.com/fittyus/api/auth/";
-  static const String imageBaseUrl = "https://shreekalyanamtravels.com/fittyus/public/";
+  static const String baseUrl = "https://www.fittyus.com/fittyus/api/auth/";
+  static const String imageBaseUrl = "https://www.fittyus.com/fittyus/public/";
 
   /// auth
   static const String loginWithMobileApi = "${baseUrl}login";

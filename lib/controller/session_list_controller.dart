@@ -7,7 +7,7 @@ import '../services/api_services.dart';
 
 class SessionListController extends GetxController implements GetxService {
   var sessionList = <SessionListModel>[].obs;
-  bool isLoading = true;
+  bool isLoading = false;
 
   Future<void> sessionListApi(String date, String city) async {
     isLoading = true;

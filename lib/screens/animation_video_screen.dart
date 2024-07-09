@@ -87,23 +87,12 @@ class _AnimationVideoScreenState extends State<AnimationVideoScreen> {
                       );
                     }
                     if (controller.animationVideoList.isEmpty) {
-                      return SizedBox(
+                      return  SizedBox(
                         width: Dimensions.screenWidth,
                         height: Dimensions.screenHeight - 200,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'No Animation Video',
-                              style: TextStyle(
-                                color: mainColor,
-                                fontSize: Dimensions.font16 + 2,
-                                fontFamily: regular,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
+                        child: Image.asset(
+                          noData,
+                          fit: BoxFit.contain,
                         ),
                       );
                     }
@@ -197,7 +186,7 @@ class _AnimationVideoScreenState extends State<AnimationVideoScreen> {
               height: 122,
               width: 138,
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(0),
+                borderRadius: BorderRadius.circular(5),
                 child: list.image!.isEmpty
                     ? Image.asset(
                         coachTopImg,

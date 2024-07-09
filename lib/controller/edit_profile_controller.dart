@@ -17,6 +17,7 @@ class EditProfileController extends GetxController implements GetxService {
   TextEditingController state = TextEditingController();
   TextEditingController city = TextEditingController();
   TextEditingController address = TextEditingController();
+  TextEditingController pincode = TextEditingController();
   TextEditingController occupation = TextEditingController();
   bool isLoading = true;
   var radioButtonItem = "".obs;
@@ -37,7 +38,9 @@ class EditProfileController extends GetxController implements GetxService {
           address.text.toString(),
           radioButtonItem.toString(),
           occupation.text.toString(),
-          image != null ? image.value.path : "");
+        pincode.text,
+          image != null ? image.value.path : "",
+         );
       if (response['status'] == true) {
         closeProgress();
         user.getProfile();
@@ -52,6 +55,7 @@ class EditProfileController extends GetxController implements GetxService {
       closeProgress();
       errorToast(e.toString());
     }
+    update();
   }
 
   Future<ImageSource?> imagePickerSheet(context) async {
