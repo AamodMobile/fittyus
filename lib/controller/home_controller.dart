@@ -47,7 +47,7 @@ class HomeController extends GetxController implements GetxService {
         update();
         return;
       }
-      var result = await ApiServices.getHomeApi(cityget);
+      var result = await ApiServices.getHomeApi("");
       var json = jsonDecode(result.body);
       final apiResponse = HomeModel.fromJson(json);
       if (apiResponse.status == true) {

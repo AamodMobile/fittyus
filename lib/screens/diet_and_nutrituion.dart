@@ -384,58 +384,71 @@ class _DietAndNutritionScreenState extends State<DietAndNutritionScreen> {
                                               itemCount: cont.viewProfileModel.value.followersList!.length,
                                               scrollDirection: Axis.horizontal,
                                               itemBuilder: (BuildContext context, int index) {
-                                                return Container(
-                                                  height: 80,
-                                                  width: 66,
-                                                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                                                  child: Column(
-                                                    children: [
-                                                      Container(
-                                                        height: 60,
-                                                        width: 60,
-                                                        decoration: BoxDecoration(
-                                                          borderRadius: BorderRadius.circular(9),
-                                                        ),
-                                                        child: ClipRRect(
-                                                          borderRadius: BorderRadius.circular(9),
-                                                          child: cont.viewProfileModel.value.followersList![index].profileImage != ""
-                                                              ? CachedNetworkImage(
-                                                                  errorWidget: (context, url, error) => Image.asset(
-                                                                    defaultUser,
+                                                return InkWell(
+                                                  onTap: () async {
+                                                    var result = await Get.to(() => NewProfileScreen(id: cont.viewProfileModel.value.followersList![index].followingId.toString()));
+                                                    if (result != null) {
+                                                      indices = [];
+                                                      cont.viewProfile(userController.user.value.id.toString(), true).then((value) {
+                                                        controller.isLoading.value = true;
+                                                        indices = List.generate(userController.viewProfileModel.value.community!.length, (index) => 0);
+                                                        controller.isLoading.value = false;
+                                                      });
+                                                    }
+                                                  },
+                                                  child: Container(
+                                                    height: 80,
+                                                    width: 66,
+                                                    margin: const EdgeInsets.symmetric(horizontal: 5),
+                                                    child: Column(
+                                                      children: [
+                                                        Container(
+                                                          height: 60,
+                                                          width: 60,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.circular(9),
+                                                          ),
+                                                          child: ClipRRect(
+                                                            borderRadius: BorderRadius.circular(10),
+                                                            child: cont.viewProfileModel.value.followersList![index].profileImage != ""
+                                                                ? CachedNetworkImage(
+                                                                    errorWidget: (context, url, error) => Image.asset(
+                                                                      defaultUser,
+                                                                      fit: BoxFit.cover,
+                                                                    ),
+                                                                    fit: BoxFit.cover,
+                                                                    height: 60,
+                                                                    width: 60,
+                                                                    imageUrl: cont.viewProfileModel.value.followersList![index].profileImage.toString(),
+                                                                    placeholder: (a, b) => const Center(
+                                                                      child: CircularProgressIndicator(
+                                                                        color: mainColor,
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                : Image.asset(
+                                                                    demoImg,
+                                                                    height: 60,
+                                                                    width: 60,
                                                                     fit: BoxFit.cover,
                                                                   ),
-                                                                  fit: BoxFit.cover,
-                                                                  height: 60,
-                                                                  width: 60,
-                                                                  imageUrl: cont.viewProfileModel.value.followersList![index].profileImage.toString(),
-                                                                  placeholder: (a, b) => const Center(
-                                                                    child: CircularProgressIndicator(
-                                                                      color: mainColor,
-                                                                    ),
-                                                                  ),
-                                                                )
-                                                              : Image.asset(
-                                                                  demoImg,
-                                                                  height: 60,
-                                                                  width: 60,
-                                                                  fit: BoxFit.cover,
-                                                                ),
+                                                          ),
                                                         ),
-                                                      ),
-                                                      const SizedBox(height: 2),
-                                                      Text(
-                                                        cont.viewProfileModel.value.followersList![index].firstName.toString(),
-                                                        maxLines: 1,
-                                                        overflow: TextOverflow.ellipsis,
-                                                        style: TextStyle(
-                                                          color: mainColor,
-                                                          fontFamily: medium,
-                                                          fontWeight: FontWeight.w700,
-                                                          fontStyle: FontStyle.normal,
-                                                          fontSize: Dimensions.font14 - 6,
+                                                        const SizedBox(height: 2),
+                                                        Text(
+                                                          cont.viewProfileModel.value.followersList![index].firstName.toString(),
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow.ellipsis,
+                                                          style: TextStyle(
+                                                            color: mainColor,
+                                                            fontFamily: medium,
+                                                            fontWeight: FontWeight.w700,
+                                                            fontStyle: FontStyle.normal,
+                                                            fontSize: Dimensions.font14 - 6,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
+                                                      ],
+                                                    ),
                                                   ),
                                                 );
                                               }),
@@ -449,10 +462,7 @@ class _DietAndNutritionScreenState extends State<DietAndNutritionScreen> {
                                       onTap: () async {
                                         var response = await Navigator.push(
                                           context,
-                                          MaterialPageRoute(
-                                              builder: (context) => const AddCommunityScreen(
-                                                    isEdit: false,
-                                                  )),
+                                          MaterialPageRoute(builder: (context) => const AddCommunityScreen(isEdit: false)),
                                         );
                                         if (response != null) {
                                           indices = [];

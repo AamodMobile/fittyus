@@ -32,6 +32,7 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(width: MediaQuery.of(context).size.width,),
               const Spacer(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -39,16 +40,18 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
                   thankYouImg,
                   height: 300,
                   width: MediaQuery.of(context).size.width,
+                  color: Colors.transparent,
                 ),
               ),
               const SizedBox(
-                height: 30,
+                height: 60,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30.0),
                 child: Text(
                   '"Look out for an email confirmation that includes all the specifics of your order."',
                   maxLines: 2,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                       color: greenColorTxt,
                       overflow: TextOverflow.ellipsis,
@@ -84,7 +87,7 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 100),
+              const SizedBox(height: 50),
             ],
           ),
         ),

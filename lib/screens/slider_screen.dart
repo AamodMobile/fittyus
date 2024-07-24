@@ -142,15 +142,15 @@ class SliderScreenState extends State<SliderScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: List.generate(
                               con.images.length,
-                              (indx) => Container(
+                              (ind) => Container(
                                 margin:
                                     const EdgeInsets.symmetric(horizontal: 2),
                                 padding: const EdgeInsets.all(5),
                                 height: 10,
-                                width: indx == con.currentPage.value ? 29 : 10,
+                                width: ind == con.currentPage.value ? 29 : 10,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
-                                  color: indx == con.currentPage.value
+                                  color: ind == con.currentPage.value
                                       ? mainColor
                                       : const Color(0xFFD9D9D9),
                                 ),

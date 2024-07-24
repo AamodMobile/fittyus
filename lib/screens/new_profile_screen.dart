@@ -9,6 +9,7 @@ import 'package:fittyus/screens/gallery_screen.dart';
 import 'package:fittyus/services/api_url.dart';
 import 'package:fittyus/widgets/text_filed_widget.dart';
 import 'package:intl/intl.dart';
+
 import 'community_details_screen.dart';
 
 class NewProfileScreen extends StatefulWidget {
@@ -29,477 +30,509 @@ class _NewProfileScreenState extends State<NewProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
-        init: Get.find<UserController>(),
-        initState: (state) {
-          indices = [];
-          Get.find<UserController>().viewProfile(widget.id, true).then((value) {
-            controller.isLoading.value = true;
-            indices = List.generate(userController.viewProfileModel.value.community!.length, (index) => 0);
-            controller.isLoading.value = false;
-          });
-        },
-        builder: (cont) {
-          return SafeArea(
-              child: Scaffold(
-            backgroundColor: whiteColor,
-            appBar: PreferredSize(
-              preferredSize: Size(Dimensions.height90, MediaQuery.of(context).size.width),
-              child: Container(
-                height: Dimensions.height45 + Dimensions.height20,
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                decoration: const BoxDecoration(
-                  color: whiteColor,
-                  boxShadow: [
-                    BoxShadow(
-                      offset: Offset(0, 1),
-                      blurRadius: 15,
-                      spreadRadius: 0,
-                      color: Color.fromRGBO(0, 0, 0, 0.2),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 30,
-                      height: 40,
-                      child: InkWell(
-                        onTap: () {
-                          Get.back();
-                        },
-                        child: const Icon(
-                          Icons.arrow_back,
-                          size: 24,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Text(
-                      "Profile",
-                      style: TextStyle(
-                        color: mainColor,
-                        fontFamily: semiBold,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                        fontSize: Dimensions.font16,
-                      ),
-                    ),
-                    const Spacer(),
-                  ],
-                ),
-              ),
-            ),
-            body: Builder(builder: (context) {
-              if (cont.isLoading) {
-                return SizedBox(
-                  height: Dimensions.screenHeight - 200,
-                  width: Dimensions.screenWidth,
-                  child: const Center(
-                      child: CircularProgressIndicator(
-                    color: mainColor,
-                  )),
-                );
-              }
-              if (cont.viewProfileModel == "") {
-                return SizedBox(
-                  width: Dimensions.screenWidth,
-                  height: Dimensions.screenHeight - 200,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'No Profile Data',
-                        style: TextStyle(color: mainColor, fontSize: Dimensions.font16 + 2, fontFamily: regular, fontWeight: FontWeight.w600,),
+      init: Get.find<UserController>(),
+      initState: (state) {
+        indices = [];
+        Get.find<UserController>().viewProfile(widget.id, true).then((value) {
+          controller.isLoading.value = true;
+          indices = List.generate(userController.viewProfileModel.value.community!.length, (index) => 0);
+          controller.isLoading.value = false;
+        });
+      },
+      builder: (cont) {
+        return WillPopScope(
+          onWillPop: () async {
+            Get.back(result: "Ok");
+            return false;
+          },
+          child: SafeArea(
+            child: Scaffold(
+              backgroundColor: whiteColor,
+              appBar: PreferredSize(
+                preferredSize: Size(Dimensions.height90, MediaQuery.of(context).size.width),
+                child: Container(
+                  height: Dimensions.height45 + Dimensions.height20,
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  decoration: const BoxDecoration(
+                    color: whiteColor,
+                    boxShadow: [
+                      BoxShadow(
+                        offset: Offset(0, 1),
+                        blurRadius: 15,
+                        spreadRadius: 0,
+                        color: Color.fromRGBO(0, 0, 0, 0.2),
                       ),
                     ],
                   ),
-                );
-              }
-              return SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Stack(
-                      clipBehavior: Clip.none,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 30,
+                        height: 40,
+                        child: InkWell(
+                          onTap: () {
+                            Get.back(result: "Ok");
+                          },
+                          child: const Icon(
+                            Icons.arrow_back,
+                            size: 24,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        "Profile",
+                        style: TextStyle(
+                          color: mainColor,
+                          fontFamily: semiBold,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                          fontSize: Dimensions.font16,
+                        ),
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
+                ),
+              ),
+              body: Builder(
+                builder: (context) {
+                  if (cont.isLoading) {
+                    return SizedBox(
+                      height: Dimensions.screenHeight - 200,
+                      width: Dimensions.screenWidth,
+                      child: const Center(
+                          child: CircularProgressIndicator(
+                        color: mainColor,
+                      )),
+                    );
+                  }
+                  if (cont.viewProfileModel == "") {
+                    return SizedBox(
+                      width: Dimensions.screenWidth,
+                      height: Dimensions.screenHeight - 200,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'No Profile Data',
+                            style: TextStyle(
+                              color: mainColor,
+                              fontSize: Dimensions.font16 + 2,
+                              fontFamily: regular,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  return SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          height: 255,
-                          child: Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                height: 209,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                  color: const Color.fromRGBO(0, 0, 0, 0.2),
-                                )),
-                                child: userController.viewProfileModel.value.profileBackCover != null && userController.viewProfileModel.value.profileBackCover != ""
-                                    ? CachedNetworkImage(
-                                        errorWidget: (context, url, error) => Image.asset(
-                                          coachTopImg,
-                                          fit: BoxFit.fill,
-                                        ),
-                                        fit: BoxFit.fill,
-                                        imageUrl: userController.viewProfileModel.value.profileBackCover.toString(),
-                                        placeholder: (a, b) => const Center(
-                                          child: CircularProgressIndicator(
-                                            color: mainColor,
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            SizedBox(
+                              height: 255,
+                              child: Stack(
+                                clipBehavior: Clip.none,
+                                children: [
+                                  Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 209,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                      color: const Color.fromRGBO(0, 0, 0, 0.2),
+                                    )),
+                                    child: userController.viewProfileModel.value.profileBackCover != null && userController.viewProfileModel.value.profileBackCover != ""
+                                        ? CachedNetworkImage(
+                                            errorWidget: (context, url, error) => Image.asset(
+                                              coachTopImg,
+                                              fit: BoxFit.fill,
+                                            ),
+                                            fit: BoxFit.fill,
+                                            imageUrl: userController.viewProfileModel.value.profileBackCover.toString(),
+                                            placeholder: (a, b) => const Center(
+                                              child: CircularProgressIndicator(
+                                                color: mainColor,
+                                              ),
+                                            ),
+                                          )
+                                        : Image.asset(
+                                            coachTopImg,
+                                            fit: BoxFit.fill,
                                           ),
-                                        ),
-                                      )
-                                    : Image.asset(
-                                        coachTopImg,
-                                        fit: BoxFit.fill,
-                                      ),
-                              ),
-                              userController.viewProfileModel.value.id == userController.user.value.id
-                                  ? Positioned(
-                                      right: 20,
-                                      bottom: 60,
-                                      child: InkWell(
-                                        onTap: () {
-                                          userController.pickImage(context, "cover", widget.id);
-                                        },
-                                        child: Container(
-                                          height: 24,
-                                          width: 29,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xFFE0DCDC),
-                                            borderRadius: BorderRadius.circular(15),
-                                          ),
-                                          child: Center(
-                                            child: Image.asset(
-                                              cameraBlackIc,
-                                              height: 16,
-                                              width: 19,
+                                  ),
+                                  userController.viewProfileModel.value.id == userController.user.value.id
+                                      ? Positioned(
+                                          right: 20,
+                                          bottom: 60,
+                                          child: InkWell(
+                                            onTap: () {
+                                              userController.pickImage(context, "cover", widget.id);
+                                            },
+                                            child: Container(
+                                              height: 24,
+                                              width: 29,
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xFFE0DCDC),
+                                                borderRadius: BorderRadius.circular(15),
+                                              ),
+                                              child: Center(
+                                                child: Image.asset(
+                                                  cameraBlackIc,
+                                                  height: 16,
+                                                  width: 19,
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
+                                        )
+                                      : const SizedBox(),
+                                ],
+                              ),
+                            ),
+                            Positioned(
+                                left: 11,
+                                bottom: -10,
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Stack(
+                                            children: [
+                                              Container(
+                                                height: 73,
+                                                width: 72,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: whiteColor,
+                                                  border: Border.all(
+                                                    color: const Color.fromRGBO(0, 0, 0, 0.2),
+                                                  ),
+                                                ),
+                                                child: ClipRRect(
+                                                    borderRadius: BorderRadius.circular(35),
+                                                    child: userController.viewProfileModel.value.profileImage != null && userController.viewProfileModel.value.profileImage != ""
+                                                        ? CachedNetworkImage(
+                                                            errorWidget: (context, url, error) => Image.asset(
+                                                              defaultUser,
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                            fit: BoxFit.cover,
+                                                            imageUrl: userController.viewProfileModel.value.profileImage.toString(),
+                                                            placeholder: (a, b) => const Center(
+                                                              child: CircularProgressIndicator(
+                                                                color: mainColor,
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : Image.asset(
+                                                            coachTopImg,
+                                                            fit: BoxFit.cover,
+                                                          )),
+                                              ),
+                                              userController.viewProfileModel.value.id == userController.user.value.id
+                                                  ? Positioned(
+                                                      right: 2,
+                                                      bottom: 2,
+                                                      child: InkWell(
+                                                        onTap: () {
+                                                          userController.pickImage(context, "profile", widget.id);
+                                                        },
+                                                        child: Container(
+                                                          height: 22,
+                                                          width: 22,
+                                                          decoration: BoxDecoration(
+                                                            color: const Color(0xFFE0DCDC),
+                                                            borderRadius: BorderRadius.circular(15),
+                                                          ),
+                                                          child: Center(
+                                                            child: Image.asset(
+                                                              cameraBlackIc,
+                                                              height: 10,
+                                                              width: 13,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : const SizedBox(),
+                                            ],
+                                          ),
+                                          const SizedBox(width: 7),
+                                          Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              const SizedBox(height: 20),
+                                              Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                                                Text(
+                                                  cont.viewProfileModel.value.firstName.toString(),
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    color: mainColor,
+                                                    fontFamily: semiBold,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontStyle: FontStyle.normal,
+                                                    fontSize: Dimensions.font14,
+                                                  ),
+                                                ),
+                                              ]),
+                                              Row(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    "Followers",
+                                                    style:
+                                                        TextStyle(color: lightGreyTxt, fontFamily: semiBold, fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 4),
+                                                  ),
+                                                  const SizedBox(width: 11),
+                                                  Text(
+                                                    cont.viewProfileModel.value.followerCount.toString(),
+                                                    style: TextStyle(color: mainColor, fontFamily: semiBold, fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 4),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    "Following",
+                                                    style:
+                                                        TextStyle(color: lightGreyTxt, fontFamily: semiBold, fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 4),
+                                                  ),
+                                                  const SizedBox(width: 11),
+                                                  Text(
+                                                    cont.viewProfileModel.value.followingCount.toString(),
+                                                    style: TextStyle(color: mainColor, fontFamily: semiBold, fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 4),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
-                                    )
-                                  : const SizedBox(),
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              Get.to(() => GalleryScreen(id: widget.id));
+                                            },
+                                            child: SizedBox(
+                                              child: Image.asset(
+                                                openGallery,
+                                                height: 40,
+                                                width: 40,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 14),
+                                          userController.viewProfileModel.value.id == userController.user.value.id
+                                              ? const SizedBox()
+                                              : InkWell(
+                                                  onTap: () {
+                                                    cont.followAndUnfollow(widget.id).then((value) => cont.viewProfile(widget.id, false));
+                                                  },
+                                                  child: Container(
+                                                    height: 32,
+                                                    width: 90,
+                                                    margin: const EdgeInsets.only(top: 50),
+                                                    decoration: BoxDecoration(
+                                                      color: whiteColor,
+                                                      border: Border.all(color: pGreen),
+                                                      borderRadius: BorderRadius.circular(4),
+                                                    ),
+                                                    child: Center(
+                                                      child: Text(
+                                                        userController.viewProfileModel.value.isFollowers == 0 ? "Follow" : "Unfollow",
+                                                        style: TextStyle(color: pGreen, fontFamily: semiBold, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font14),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                          const SizedBox(width: 20)
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ))
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: const Color.fromRGBO(0, 0, 0, 0.2), width: 1),
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                "Followers",
+                                style: TextStyle(color: mainColor, fontFamily: semiBold, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font16),
+                              ),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                height: 80,
+                                width: MediaQuery.of(context).size.width,
+                                child: cont.viewProfileModel.value.followersList!.isEmpty
+                                    ? Align(
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          "Have not Follower",
+                                          style: TextStyle(color: pGreen, fontFamily: semiBold, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font14),
+                                        ),
+                                      )
+                                    : ListView.builder(
+                                        itemCount: cont.viewProfileModel.value.followersList!.length,
+                                        scrollDirection: Axis.horizontal,
+                                        itemBuilder: (BuildContext context, int index) {
+                                          return InkWell(
+                                            onTap: () async {
+                                              indices = [];
+                                              Get.find<UserController>().viewProfile(cont.viewProfileModel.value.followersList![index].followingId.toString(), true).then((value) {
+                                                controller.isLoading.value = true;
+                                                indices = List.generate(userController.viewProfileModel.value.community!.length, (index) => 0);
+                                                controller.isLoading.value = false;
+                                              });
+                                            },
+                                            child: Container(
+                                              height: 80,
+                                              width: 66,
+                                              margin: const EdgeInsets.symmetric(horizontal: 5),
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    height: 60,
+                                                    width: 60,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(9),
+                                                    ),
+                                                    child: ClipRRect(
+                                                      borderRadius: BorderRadius.circular(10),
+                                                      child: cont.viewProfileModel.value.followersList![index].profileImage != ""
+                                                          ? CachedNetworkImage(
+                                                              errorWidget: (context, url, error) => Image.asset(
+                                                                defaultUser,
+                                                                fit: BoxFit.cover,
+                                                              ),
+                                                              fit: BoxFit.cover,
+                                                              height: 60,
+                                                              width: 60,
+                                                              imageUrl: cont.viewProfileModel.value.followersList![index].profileImage.toString(),
+                                                              placeholder: (a, b) => const Center(
+                                                                child: CircularProgressIndicator(
+                                                                  color: mainColor,
+                                                                ),
+                                                              ),
+                                                            )
+                                                          : Image.asset(
+                                                              demoImg,
+                                                              height: 60,
+                                                              width: 60,
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 2),
+                                                  Text(
+                                                    cont.viewProfileModel.value.followersList![index].firstName.toString(),
+                                                    maxLines: 1,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      color: mainColor,
+                                                      fontFamily: medium,
+                                                      fontWeight: FontWeight.w700,
+                                                      fontStyle: FontStyle.normal,
+                                                      fontSize: Dimensions.font14 - 6,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        }),
+                              ),
+                              const SizedBox(height: 20),
                             ],
                           ),
                         ),
-                        Positioned(
-                            left: 11,
-                            bottom: -10,
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Stack(
-                                        children: [
-                                          Container(
-                                            height: 73,
-                                            width: 72,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: whiteColor,
-                                              border: Border.all(
-                                                color: const Color.fromRGBO(0, 0, 0, 0.2),
-                                              ),
-                                            ),
-                                            child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(35),
-                                                child: userController.viewProfileModel.value.profileImage != null && userController.viewProfileModel.value.profileImage != ""
-                                                    ? CachedNetworkImage(
-                                                        errorWidget: (context, url, error) => Image.asset(
-                                                          defaultUser,
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                        fit: BoxFit.cover,
-                                                        imageUrl: userController.viewProfileModel.value.profileImage.toString(),
-                                                        placeholder: (a, b) => const Center(
-                                                          child: CircularProgressIndicator(
-                                                            color: mainColor,
-                                                          ),
-                                                        ),
-                                                      )
-                                                    : Image.asset(
-                                                        coachTopImg,
-                                                        fit: BoxFit.cover,
-                                                      )),
-                                          ),
-                                          userController.viewProfileModel.value.id == userController.user.value.id
-                                              ? Positioned(
-                                                  right: 2,
-                                                  bottom: 2,
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      userController.pickImage(context, "profile", widget.id);
-                                                    },
-                                                    child: Container(
-                                                      height: 22,
-                                                      width: 22,
-                                                      decoration: BoxDecoration(
-                                                        color: const Color(0xFFE0DCDC),
-                                                        borderRadius: BorderRadius.circular(15),
-                                                      ),
-                                                      child: Center(
-                                                        child: Image.asset(
-                                                          cameraBlackIc,
-                                                          height: 10,
-                                                          width: 13,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
-                                              : const SizedBox(),
-                                        ],
-                                      ),
-                                      const SizedBox(width: 7),
-                                      Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          const SizedBox(height: 20),
-                                          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                                            Text(
-                                              cont.viewProfileModel.value.firstName.toString(),
-                                              textAlign: TextAlign.start,
-                                              style: TextStyle(
-                                                color: mainColor,
-                                                fontFamily: semiBold,
-                                                fontWeight: FontWeight.w700,
-                                                fontStyle: FontStyle.normal,
-                                                fontSize: Dimensions.font14,
-                                              ),
-                                            ),]),
-                                          Row(
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                "Followers",
-                                                style: TextStyle(color: lightGreyTxt, fontFamily: semiBold, fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 4),
-                                              ),
-                                              const SizedBox(width: 11),
-                                              Text(
-                                                cont.viewProfileModel.value.followerCount.toString(),
-                                                style: TextStyle(color: mainColor, fontFamily: semiBold, fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 4),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Following",
-                                                style: TextStyle(color: lightGreyTxt, fontFamily: semiBold, fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 4),
-                                              ),
-                                              const SizedBox(width: 11),
-                                              Text(
-                                                cont.viewProfileModel.value.followingCount.toString(),
-                                                style: TextStyle(color: mainColor, fontFamily: semiBold, fontWeight: FontWeight.w700, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 4),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                        cont.viewProfileModel.value.id.toString() == userController.user.value.id.toString()
+                            ? InkWell(
+                                onTap: () async {
+                                  var response = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const AddCommunityScreen(
+                                              isEdit: false,
+                                            )),
+                                  );
+                                  if (response != null) {
+                                    indices = [];
+                                    Get.find<UserController>().viewProfile(widget.id, true).then((value) {
+                                      controller.isLoading.value = true;
+                                      indices = List.generate(userController.viewProfileModel.value.community!.length, (index) => 0);
+                                      controller.isLoading.value = false;
+                                    });
+                                  } else {}
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+                                  width: MediaQuery.of(context).size.width,
+                                  decoration: BoxDecoration(color: const Color(0xFF2C986D), borderRadius: BorderRadius.circular(5)),
+                                  height: 43,
+                                  child: Center(
+                                    child: Text(
+                                      "Add Post",
+                                      style: TextStyle(color: whiteColor, fontFamily: medium, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 2),
+                                    ),
                                   ),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          Get.to(() => GalleryScreen(id: widget.id));
-                                        },
-                                        child: SizedBox(
-                                          child: Image.asset(
-                                            openGallery,
-                                            height: 40,
-                                            width: 40,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 14),
-                                      userController.viewProfileModel.value.id == userController.user.value.id
-                                          ? const SizedBox()
-                                          : InkWell(
-                                              onTap: () {
-                                                cont.followAndUnfollow(widget.id).then((value) => cont.viewProfile(widget.id, false));
-                                              },
-                                              child: Container(
-                                                height: 32,
-                                                width: 90,
-                                                margin: const EdgeInsets.only(top: 50),
-                                                decoration: BoxDecoration(
-                                                  color: whiteColor,
-                                                  border: Border.all(color: pGreen),
-                                                  borderRadius: BorderRadius.circular(4),
-                                                ),
-                                                child: Center(
-                                                  child: Text(
-                                                    userController.viewProfileModel.value.isFollowers == 0 ? "Follow" : "Unfollow",
-                                                    style: TextStyle(color: pGreen, fontFamily: semiBold, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font14),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                      const SizedBox(width: 20)
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ))
+                                ),
+                              )
+                            : const SizedBox(),
+                        cont.viewProfileModel.value.community!.isEmpty
+                            ? SizedBox(
+                                height: 200,
+                                width: MediaQuery.of(context).size.width,
+                                child: Center(
+                                  child: Text(
+                                    "No Post Yet",
+                                    style: TextStyle(color: mainColor, fontFamily: medium, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 2),
+                                  ),
+                                ),
+                              )
+                            : MediaQuery.removePadding(
+                                context: context,
+                                removeTop: true,
+                                child: ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: cont.viewProfileModel.value.community!.length,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    return myCommunityListTile(cont.viewProfileModel.value.community![index], index);
+                                  },
+                                ),
+                              )
                       ],
                     ),
-                    const SizedBox(height: 20),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: const Color.fromRGBO(0, 0, 0, 0.2), width: 1),
-                      ),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Followers",
-                            style: TextStyle(color: mainColor, fontFamily: semiBold, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font16),
-                          ),
-                          const SizedBox(height: 20),
-                          SizedBox(
-                            height: 80,
-                            width: MediaQuery.of(context).size.width,
-                            child: cont.viewProfileModel.value.followersList!.isEmpty
-                                ? Align(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "Have not Follower",
-                                      style: TextStyle(color: pGreen, fontFamily: semiBold, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font14),
-                                    ),
-                                  )
-                                : ListView.builder(
-                                    itemCount: cont.viewProfileModel.value.followersList!.length,
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (BuildContext context, int index) {
-                                      return Container(
-                                        height: 80,
-                                        width: 66,
-                                        margin: const EdgeInsets.symmetric(horizontal: 5),
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              height: 60,
-                                              width: 60,
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(9),
-                                              ),
-                                              child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(9),
-                                                child:    cont.viewProfileModel.value.followersList![index].profileImage != null && cont.viewProfileModel.value.followersList![index].profileImage != ""
-                                                    ? CachedNetworkImage(
-                                                  errorWidget: (context, url, error) => Image.asset(
-                                                    defaultUser,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                  fit: BoxFit.cover,
-                                                  imageUrl:  cont.viewProfileModel.value.followersList![index].profileImage.toString(),
-                                                  placeholder: (a, b) => const Center(
-                                                    child: CircularProgressIndicator(
-                                                      color: mainColor,
-                                                    ),
-                                                  ),
-                                                )
-                                                    : Image.asset(
-                                                  defaultUser,
-                                                  fit: BoxFit.cover,
-                                                )
-                                              ),
-                                            ),
-                                            const SizedBox(height: 2),
-                                            Text(
-                                              cont.viewProfileModel.value.followersList![index].firstName.toString(),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                color: mainColor,
-                                                fontFamily: medium,
-                                                fontWeight: FontWeight.w700,
-                                                fontStyle: FontStyle.normal,
-                                                fontSize: Dimensions.font14 - 6,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    }),
-                          ),
-                          const SizedBox(height: 20),
-                        ],
-                      ),
-                    ),
-                    cont.viewProfileModel.value.id.toString() == userController.user.value.id.toString()
-                        ? InkWell(
-                            onTap: () async {
-                              var response = await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const AddCommunityScreen(
-                                          isEdit: false,
-                                        )),
-                              );
-                              if (response != null) {
-                                indices = [];
-                                Get.find<UserController>().viewProfile(widget.id, true).then((value) {
-                                  controller.isLoading.value = true;
-                                  indices = List.generate(userController.viewProfileModel.value.community!.length, (index) => 0);
-                                  controller.isLoading.value = false;
-                                });
-                              } else {}
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(color: const Color(0xFF2C986D), borderRadius: BorderRadius.circular(5)),
-                              height: 43,
-                              child: Center(
-                                child: Text(
-                                  "Add Post",
-                                  style: TextStyle(color: whiteColor, fontFamily: medium, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 2),
-                                ),
-                              ),
-                            ),
-                          )
-                        : const SizedBox(),
-                    cont.viewProfileModel.value.community!.isEmpty
-                        ? SizedBox(
-                            height: 200,
-                            width: MediaQuery.of(context).size.width,
-                            child: Center(
-                              child: Text(
-                                "No Post Yet",
-                                style: TextStyle(color: mainColor, fontFamily: medium, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font14 - 2),
-                              ),
-                            ),
-                          )
-                        : MediaQuery.removePadding(
-                            context: context,
-                            removeTop: true,
-                            child: ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: cont.viewProfileModel.value.community!.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return myCommunityListTile(cont.viewProfileModel.value.community![index], index);
-                              },
-                            ),
-                          )
-                  ],
-                ),
-              );
-            }),
-          ));
-        });
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   myCommunityListTile(Community list, int listIndex) {
@@ -509,9 +542,9 @@ class _NewProfileScreenState extends State<NewProfileScreen> {
         Get.to(() => CommunityDetails(communityId: list.id.toString()));
       },
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.006,horizontal: 5),
+        margin: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.006, horizontal: 5),
         padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.01, vertical: MediaQuery.of(context).size.height * 0.01),
-        decoration: BoxDecoration(color: whiteColor, borderRadius: BorderRadius.circular(10),border: Border.all(color: borderColorCont)),
+        decoration: BoxDecoration(color: whiteColor, borderRadius: BorderRadius.circular(10), border: Border.all(color: borderColorCont)),
         child: Column(
           children: [
             Padding(
@@ -529,7 +562,7 @@ class _NewProfileScreenState extends State<NewProfileScreen> {
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
-                            child:  list.profileImage != ""
+                            child: list.profileImage != ""
                                 ? CachedNetworkImage(
                                     /*errorWidget: (context, url, error) => Image.asset(
                                       defaultUser,
@@ -618,253 +651,253 @@ class _NewProfileScreenState extends State<NewProfileScreen> {
             const SizedBox(height: 10),
             list.type == "multipal"
                 ? Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Stack(
-                children: [
-                  CarouselSlider(
-                    carouselController: carouselController,
-                    options: CarouselOptions(
-                      height: MediaQuery.of(context).size.height * 0.400,
-                      enlargeCenterPage: true,
-                      viewportFraction: 1.0,
-                      pauseAutoPlayOnTouch: true,
-                      enableInfiniteScroll: false,
-                      onPageChanged: (index, reason) {
-                        setState(() {
-                          indices[listIndex] = index;
-                        });
-                      },
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
                     ),
-                    items: List.generate(
-                      list.communityImages!.length,
-                      (ind) => InkWell(
-                        onTap: () {},
-                        child: SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.470,
-                          width: Get.width,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5),
-                            child: list.communityImages!.isNotEmpty
-                                ? CachedNetworkImage(
-                                    errorWidget: (context, url, error) => Image.asset(
-                                      demoImgTraining,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    fit: BoxFit.contain,
-                                    imageUrl: ApiUrl.imageBaseUrl + list.communityImages![ind].image.toString(),
-                                    placeholder: (a, b) => const Center(
-                                      child: CircularProgressIndicator(
-                                        color: mainColor,
-                                      ),
-                                    ),
-                                  )
-                                : Image.asset(
-                                    demoImg,
-                                    fit: BoxFit.cover,
-                                  ),
+                    child: Stack(
+                      children: [
+                        CarouselSlider(
+                          carouselController: carouselController,
+                          options: CarouselOptions(
+                            height: MediaQuery.of(context).size.height * 0.400,
+                            enlargeCenterPage: true,
+                            viewportFraction: 1.0,
+                            pauseAutoPlayOnTouch: true,
+                            enableInfiniteScroll: false,
+                            onPageChanged: (index, reason) {
+                              setState(() {
+                                indices[listIndex] = index;
+                              });
+                            },
+                          ),
+                          items: List.generate(
+                            list.communityImages!.length,
+                            (ind) => InkWell(
+                              onTap: () {},
+                              child: SizedBox(
+                                height: MediaQuery.of(context).size.height * 0.470,
+                                width: Get.width,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5),
+                                  child: list.communityImages!.isNotEmpty
+                                      ? CachedNetworkImage(
+                                          errorWidget: (context, url, error) => Image.asset(
+                                            demoImgTraining,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          fit: BoxFit.contain,
+                                          imageUrl: ApiUrl.imageBaseUrl + list.communityImages![ind].image.toString(),
+                                          placeholder: (a, b) => const Center(
+                                            child: CircularProgressIndicator(
+                                              color: mainColor,
+                                            ),
+                                          ),
+                                        )
+                                      : Image.asset(
+                                          demoImg,
+                                          fit: BoxFit.cover,
+                                        ),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    right: 10,
-                    top: 10,
-                    child: Container(
-                      width: 40,
-                      height: 20,
-                      decoration: BoxDecoration(
-                        color: const Color.fromRGBO(16, 17, 16, 0.3),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "${indices[listIndex] + 1}/${list.communityImages!.length}",
-                            style: TextStyle(fontStyle: FontStyle.normal, fontWeight: FontWeight.w400, fontSize: Dimensions.font14 - 4, fontFamily: regular, color: whiteColor),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  list.userId.toString() == userController.user.value.id.toString()
-                      ? Positioned(
+                        Positioned(
                           right: 10,
-                          bottom: 10,
-                          child: InkWell(
-                            onTap: () {
-                              controller.deleteCommunity(list.id.toString()).then((value) => userController.viewProfile(widget.id, false));
-                            },
-                            child: Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  color: const Color.fromRGBO(16, 17, 16, 0.3),
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: const Center(
-                                  child: Icon(
-                                    Icons.delete,
-                                    color: whiteColor,
-                                    size: 18,
-                                  ),
-                                )),
-                          ),
-                        )
-                      : const SizedBox(),
-                  list.userId.toString() == userController.user.value.id.toString()
-                      ? Positioned(
-                          left: 10,
-                          bottom: 10,
-                          child: InkWell(
-                            onTap: () async {
-                              var response = await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AddCommunityScreen(
-                                          isEdit: true,
-                                          modelEdit: list,
-                                        )),
-                              );
-                              if (response != null) {
-                                indices = [];
-                                Get.find<UserController>().viewProfile(widget.id, true).then((value) {
-                                  controller.isLoading.value = true;
-                                  indices = List.generate(userController.viewProfileModel.value.community!.length, (index) => 0);
-                                  controller.isLoading.value = false;
-                                });
-                              } else {}
-                            },
-                            child: Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  color: const Color.fromRGBO(16, 17, 16, 0.3),
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: const Center(
-                                  child: Icon(
-                                    Icons.edit,
-                                    color: whiteColor,
-                                    size: 18,
-                                  ),
-                                )),
-                          ),
-                        )
-                      : const SizedBox(),
-                ],
-              ),
-            ): Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.400,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Stack(
-                children: [
-                  Row(
-                    children: [
-                      list.beforeImg != "" && list.beforeImg != null
-                          ? Expanded(
-                          child: list.beforeImg != "" && list.beforeImg != null
-                              ? CachedNetworkImage(
-                            errorWidget: (context, url, error) => Image.asset(demoImg, height: MediaQuery.of(context).size.height * 0.400, fit: BoxFit.cover),
-                            fit: BoxFit.fill,
-                            height: MediaQuery.of(context).size.height * 0.400,
-                            imageUrl: ApiUrl.imageBaseUrl + list.beforeImg.toString(),
-                            placeholder: (a, b) => const Center(
-                              child: CircularProgressIndicator(
-                                color: mainColor,
-                              ),
+                          top: 10,
+                          child: Container(
+                            width: 40,
+                            height: 20,
+                            decoration: BoxDecoration(
+                              color: const Color.fromRGBO(16, 17, 16, 0.3),
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                          )
-                              : Image.asset(demoImg, height: MediaQuery.of(context).size.height * 0.400, fit: BoxFit.cover))
-                          : const SizedBox(),
-                      list.afterImage != "" && list.afterImage != null
-                          ? Expanded(
-                          child: list.afterImage != "" && list.afterImage != null
-                              ? CachedNetworkImage(
-                            errorWidget: (context, url, error) => Image.asset(demoImg, height: MediaQuery.of(context).size.height * 0.400, fit: BoxFit.cover),
-                            fit: BoxFit.fill,
-                            height: MediaQuery.of(context).size.height * 0.400,
-                            imageUrl: ApiUrl.imageBaseUrl + list.afterImage.toString(),
-                            placeholder: (a, b) => const Center(
-                              child: CircularProgressIndicator(
-                                color: mainColor,
-                              ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "${indices[listIndex] + 1}/${list.communityImages!.length}",
+                                  style: TextStyle(
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: Dimensions.font14 - 4,
+                                    fontFamily: regular,
+                                    color: whiteColor,
+                                  ),
+                                )
+                              ],
                             ),
-                          )
-                              : Image.asset(demoImg, height: MediaQuery.of(context).size.height * 0.400, fit: BoxFit.cover))
-                          : const SizedBox(),
-                    ],
+                          ),
+                        ),
+                        list.userId.toString() == userController.user.value.id.toString()
+                            ? Positioned(
+                                right: 10,
+                                bottom: 10,
+                                child: InkWell(
+                                  onTap: () {
+                                    controller.deleteCommunity(list.id.toString()).then((value) => userController.viewProfile(widget.id, false));
+                                  },
+                                  child: Container(
+                                      padding: const EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        color: const Color.fromRGBO(16, 17, 16, 0.3),
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: const Center(
+                                        child: Icon(
+                                          Icons.delete,
+                                          color: whiteColor,
+                                          size: 18,
+                                        ),
+                                      )),
+                                ),
+                              )
+                            : const SizedBox(),
+                        list.userId.toString() == userController.user.value.id.toString()
+                            ? Positioned(
+                                left: 10,
+                                bottom: 10,
+                                child: InkWell(
+                                  onTap: () async {
+                                    var response = await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => AddCommunityScreen(
+                                                isEdit: true,
+                                                modelEdit: list,
+                                              )),
+                                    );
+                                    if (response != null) {
+                                      indices = [];
+                                      Get.find<UserController>().viewProfile(widget.id, true).then((value) {
+                                        controller.isLoading.value = true;
+                                        indices = List.generate(userController.viewProfileModel.value.community!.length, (index) => 0);
+                                        controller.isLoading.value = false;
+                                      });
+                                    } else {}
+                                  },
+                                  child: Container(
+                                      padding: const EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        color: const Color.fromRGBO(16, 17, 16, 0.3),
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: const Center(
+                                        child: Icon(
+                                          Icons.edit,
+                                          color: whiteColor,
+                                          size: 18,
+                                        ),
+                                      )),
+                                ),
+                              )
+                            : const SizedBox(),
+                      ],
+                    ),
+                  )
+                : Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.400,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Stack(
+                      children: [
+                        Row(
+                          children: [
+                            list.beforeImg != "" && list.beforeImg != null
+                                ? Expanded(
+                                    child: list.beforeImg != "" && list.beforeImg != null
+                                        ? CachedNetworkImage(
+                                            errorWidget: (context, url, error) => Image.asset(demoImg, height: MediaQuery.of(context).size.height * 0.400, fit: BoxFit.cover),
+                                            fit: BoxFit.fill,
+                                            height: MediaQuery.of(context).size.height * 0.400,
+                                            imageUrl: ApiUrl.imageBaseUrl + list.beforeImg.toString(),
+                                            placeholder: (a, b) => const Center(
+                                              child: CircularProgressIndicator(
+                                                color: mainColor,
+                                              ),
+                                            ),
+                                          )
+                                        : Image.asset(demoImg, height: MediaQuery.of(context).size.height * 0.400, fit: BoxFit.cover))
+                                : const SizedBox(),
+                            list.afterImage != "" && list.afterImage != null
+                                ? Expanded(
+                                    child: list.afterImage != "" && list.afterImage != null
+                                        ? CachedNetworkImage(
+                                            errorWidget: (context, url, error) => Image.asset(demoImg, height: MediaQuery.of(context).size.height * 0.400, fit: BoxFit.cover),
+                                            fit: BoxFit.fill,
+                                            height: MediaQuery.of(context).size.height * 0.400,
+                                            imageUrl: ApiUrl.imageBaseUrl + list.afterImage.toString(),
+                                            placeholder: (a, b) => const Center(
+                                              child: CircularProgressIndicator(
+                                                color: mainColor,
+                                              ),
+                                            ),
+                                          )
+                                        : Image.asset(demoImg, height: MediaQuery.of(context).size.height * 0.400, fit: BoxFit.cover))
+                                : const SizedBox(),
+                          ],
+                        ),
+                        list.userId.toString() == userController.user.value.id.toString()
+                            ? Positioned(
+                                right: 10,
+                                bottom: 10,
+                                child: InkWell(
+                                  onTap: () {
+                                    controller.deleteCommunity(list.id.toString()).then((value) => userController.viewProfile(widget.id, false));
+                                  },
+                                  child: Container(
+                                      padding: const EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        color: const Color.fromRGBO(16, 17, 16, 0.3),
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: const Center(
+                                        child: Icon(
+                                          Icons.delete,
+                                          color: whiteColor,
+                                          size: 18,
+                                        ),
+                                      )),
+                                ),
+                              )
+                            : const SizedBox(),
+                        list.userId.toString() == userController.user.value.id.toString()
+                            ? Positioned(
+                                left: 10,
+                                bottom: 10,
+                                child: InkWell(
+                                  onTap: () async {
+                                    var response = await Navigator.push(context, MaterialPageRoute(builder: (context) => AddCommunityScreen(isEdit: true, modelEdit: list)));
+                                    if (response != null) {
+                                      indices = [];
+                                      Get.find<UserController>().viewProfile(widget.id, true).then((value) {
+                                        controller.isLoading.value = true;
+                                        indices = List.generate(userController.viewProfileModel.value.community!.length, (index) => 0);
+                                        controller.isLoading.value = false;
+                                      });
+                                    } else {}
+                                  },
+                                  child: Container(
+                                      padding: const EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        color: const Color.fromRGBO(16, 17, 16, 0.3),
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: const Center(
+                                        child: Icon(
+                                          Icons.edit,
+                                          color: whiteColor,
+                                          size: 18,
+                                        ),
+                                      )),
+                                ),
+                              )
+                            : const SizedBox(),
+                      ],
+                    ),
                   ),
-                  list.userId.toString() == userController.user.value.id.toString()
-                      ? Positioned(
-                    right: 10,
-                    bottom: 10,
-                    child: InkWell(
-                      onTap: () {
-                        controller.deleteCommunity(list.id.toString()).then((value) => userController.viewProfile(widget.id, false));
-                      },
-                      child: Container(
-                          padding: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            color: const Color.fromRGBO(16, 17, 16, 0.3),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: const Center(
-                            child: Icon(
-                              Icons.delete,
-                              color: whiteColor,
-                              size: 18,
-                            ),
-                          )),
-                    ),
-                  )
-                      : const SizedBox(),
-                  list.userId.toString() == userController.user.value.id.toString()
-                      ? Positioned(
-                    left: 10,
-                    bottom: 10,
-                    child: InkWell(
-                      onTap: () async {
-                        var response = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddCommunityScreen(
-                                isEdit: true,
-                                modelEdit: list,
-                              )),
-                        );
-                        if (response != null) {
-                          indices = [];
-                          Get.find<UserController>().viewProfile(widget.id, true).then((value) {
-                            controller.isLoading.value = true;
-                            indices = List.generate(userController.viewProfileModel.value.community!.length, (index) => 0);
-                            controller.isLoading.value = false;
-                          });
-                        } else {}
-                      },
-                      child: Container(
-                          padding: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            color: const Color.fromRGBO(16, 17, 16, 0.3),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: const Center(
-                            child: Icon(
-                              Icons.edit,
-                              color: whiteColor,
-                              size: 18,
-                            ),
-                          )),
-                    ),
-                  )
-                      : const SizedBox(),
-                ],
-              ),
-            ),
             const SizedBox(height: 15),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -1110,9 +1143,7 @@ class _NewProfileScreenState extends State<NewProfileScreen> {
                               children: [
                                 InkWell(
                                   onTap: () {
-                                    controller.likeComment(list.comments![0].id.toString()).then((value) {
-
-                                    });
+                                    controller.likeComment(list.comments![0].id.toString()).then((value) {});
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),

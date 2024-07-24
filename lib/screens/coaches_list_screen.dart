@@ -32,7 +32,7 @@ class _CoachesListScreenState extends State<CoachesListScreen> {
       init: Get.find<CoachListController>(),
       initState: (state) {
         Get.find<CoachListController>().getCoachListApi(
-            widget.categoryId.toString(), widget.city.toString());
+            widget.categoryId.toString(),"");
       },
       builder: (contextCtrl) {
         return SafeArea(

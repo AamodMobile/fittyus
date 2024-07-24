@@ -2,23 +2,21 @@
 
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:fittyus/constants/constants.dart';
-import 'package:fittyus/constants/util.dart';
 import 'package:fittyus/model/view_profile_model.dart';
 import 'package:fittyus/screens/login_screen.dart';
 import 'package:fittyus/services/api_logs.dart';
-import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../model/user_model.dart';
 import '../services/api_services.dart';
 
 class UserController extends GetxController {
-  var user = UserModel(0, 0, '', '', '', '', '', '', '', '', '', '', '', '', '',
-          '', '', '', '', '', '', '', '', '', '', '', '', '', "")
-      .obs;
+  var user = UserModel(0, 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', "").obs;
   var viewProfileModel = ViewProfileModel().obs;
-  var logindata;
+  var loginData;
   var crtData;
   var userRole;
   bool isLoading = false;
@@ -32,8 +30,8 @@ class UserController extends GetxController {
   }
 
   getUser() async {
-    logindata = await SharedPreferences.getInstance();
-    crtData = logindata.getString('currentUser');
+    loginData = await SharedPreferences.getInstance();
+    crtData = loginData.getString('currentUser');
     UserModel crtUser = UserModel.fromJson(jsonDecode(crtData));
     user.value = crtUser;
     update();
@@ -120,9 +118,7 @@ class UserController extends GetxController {
   Future<void> backOverOrEditProfile(String id) async {
     try {
       showProgress();
-      var response = await ApiServices.backOverAndProfileUpdate(
-          image != null ? image.value.path : "",
-          backCover != null ? backCover.value.path : "");
+      var response = await ApiServices.backOverAndProfileUpdate(image != null ? image.value.path : "", backCover != null ? backCover.value.path : "");
       if (response['status'] == true) {
         closeProgress();
         getProfile();
@@ -140,7 +136,7 @@ class UserController extends GetxController {
     update();
   }
 
-  void pickImage(BuildContext context, String type,String id) async {
+  void pickImage(BuildContext context, String type, String id) async {
     var source = await imagePickerSheet(context);
     if (source != null) {
       // ignore: invalid_use_of_visible_for_testing_member

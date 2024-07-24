@@ -417,67 +417,79 @@ class _AccountScreenState extends State<AccountScreen> {
                 decoration: const BoxDecoration(color: whiteColor, boxShadow: [BoxShadow(offset: Offset(0, 4), blurRadius: 4, spreadRadius: 0, color: Color.fromRGBO(0, 0, 0, 0.25))]),
                 child: MyButton(
                   onPressed: () async {
+
                     Get.defaultDialog(
                       title: "",
-                      content: Column(
-                        children: [
-                          Image.asset(
-                            splashLogo,
-                            height: 70,
-                            width: 70,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Text(
-                            "Are you sure want to logout",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
+                      contentPadding: EdgeInsets.zero,
+                      titlePadding: EdgeInsets.zero,
+                      content: Container(
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(15)),
+                        child: Column(
+                          children: [
+                            SizedBox(width: MediaQuery.of(context).size.width),
+                            Image.asset(
+                              splashLogo,
+                              height: 70,
+                              width: 70,
                             ),
-                          ),
-                          const SizedBox(height: 10),
-                        ],
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const Text(
+                              "Are you sure want to logout",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.grey[300], fixedSize: const Size(100, 15), shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5)))),
+                                  child: const Text(
+                                    "Cancel",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    Get.back();
+                                  },
+                                ),
+                                const SizedBox(width: 30),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      fixedSize: const Size(100, 15), backgroundColor: mainColor, shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5)))),
+                                  child: const Text(
+                                    "Confirm",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    SharedPreferences preferences = await SharedPreferences.getInstance();
+                                    await preferences.clear();
+                                    Get.offAll(() => const LoginScreen());
+                                    Get.back();
+                                  },
+                                )
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                       backgroundColor: Colors.white,
-                      actions: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.grey[300], fixedSize: const Size(100, 15), shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5)))),
-                          child: const Text(
-                            "Cancel",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          onPressed: () {
-                            Get.back();
-                          },
-                        ),
-                        const SizedBox(width: 30),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              fixedSize: const Size(100, 15), backgroundColor: mainColor, shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5)))),
-                          child: const Text(
-                            "Confirm",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          onPressed: () async {
-                            SharedPreferences preferences = await SharedPreferences.getInstance();
-                            await preferences.clear();
-                            Get.offAll(() => const LoginScreen());
-                            Get.back();
-                          },
-                        )
-                      ],
                       barrierDismissible: true,
+
                     );
                   },
                   color: whiteColor,

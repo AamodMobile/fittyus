@@ -121,7 +121,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
-          useMaterial3: true,
+          useMaterial3: false,
         ),
         home: const SplashScreen(),
       ),

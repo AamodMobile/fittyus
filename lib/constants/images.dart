@@ -2,7 +2,7 @@
 const appLogo = "assets/icons/logo.png";
 const appLogoGif = "assets/icons/app_logo.gif";
 const appNewLogo = "assets/icons/new_logo.jpg";
-const splashLogo = "assets/icons/splash_logo.png";
+const splashLogo = "assets/icons/new_logo_f.png";
 const transparentLogo = "assets/icons/logo_transparent.png";
 const arrowRight = "assets/icons/arrow_right.png";
 const indiaFlag = "assets/icons/india.png";
@@ -96,7 +96,7 @@ const coachTopImg = 'assets/images/coach_top.png';
 const certificateImg = 'assets/images/certificate_img.png';
 const selectPlanImg = 'assets/images/select_plan_bg.png';
 const noNotificationImg = 'assets/images/no_notification.png';
-const thankYouBgImg = 'assets/images/thanks_bg.png';
+const thankYouBgImg = 'assets/images/thans_img.png';
 const thankYouImg = 'assets/images/thans_img.png';
 const noInternetImg = 'assets/images/no_internet_img.png';
 const feedbackBg = 'assets/images/feedback_bg.png';

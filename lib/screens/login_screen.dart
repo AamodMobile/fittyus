@@ -57,13 +57,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.13,
+                        height: MediaQuery.of(context).size.height * 0.20,
                         width: MediaQuery.of(context).size.width,
                       ),
                       Image.asset(
                         transparentLogo,
-                        height: MediaQuery.of(context).size.height * 0.19,
+                        height: MediaQuery.of(context).size.height * 0.10,
                         width: MediaQuery.of(context).size.width * 0.40,
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.02,
+                        width: MediaQuery.of(context).size.width,
                       ),
                       Text(
                         textAlign: TextAlign.center,
