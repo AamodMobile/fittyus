@@ -78,8 +78,6 @@ class _AddChallengePostScreenState extends State<AddChallengePostScreen> {
       imageFormat: ImageFormat.JPEG,
       maxWidth: 1000,
       maxHeight: 1000,
-
-      //this image will store in created folderpath
     );
     return thumbnailPath;
   }

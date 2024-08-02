@@ -76,6 +76,7 @@ const challengeSearch = "assets/icons/challenge_search.png";
 const coachSearch = "assets/icons/coach_search.png";
 const custmoreProfile = "assets/icons/custmore_profile.png";
 const sessionSearch = "assets/icons/session_search.png";
+const logoNewAnimation = "assets/icons/logo_new_animation.gif";
 
 //images
 const splash = "assets/images/splash.png";
