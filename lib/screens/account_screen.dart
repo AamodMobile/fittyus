@@ -264,7 +264,7 @@ class _AccountScreenState extends State<AccountScreen> {
               InkWell(
                 onTap: () async {
                   await Share.share('Fittyus App Download From Play Store:-'
-                      '\n https://play.google.com/store/apps/details?id=com.fittyus"');
+                      '\n https://play.google.com/store/apps/details?id=com.fittyus.online"');
                 },
                 child: myMenuCont(shareMenuIc, "Share"),
               ),

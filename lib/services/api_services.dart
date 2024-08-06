@@ -158,7 +158,7 @@ class ApiServices extends GetConnect {
         request.files.add(file);
       }
       response = await http.Response.fromStream(await request.send());
-      print(response.body);
+      Log.console(response.body);
       if (response.body != null) {
         if (response.statusCode == 200) {
           result = jsonDecode(response.body);

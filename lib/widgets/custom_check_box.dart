@@ -3,11 +3,11 @@ import 'package:fittyus/constants/constants.dart';
 
 class LabeledCheckbox extends StatelessWidget {
   const LabeledCheckbox({
-    Key? key,
+    super.key,
     required this.label,
     required this.value,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   final String label;
   final bool value;

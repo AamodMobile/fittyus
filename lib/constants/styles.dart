@@ -1,4 +1,4 @@
-///App font
+//App font
 
 const regular = "Inter-Regular";
 const black="Inter-Black";

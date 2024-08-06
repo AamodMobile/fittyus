@@ -69,6 +69,6 @@ class DefaultFirebaseOptions {
     storageBucket: 'fittyus-app.appspot.com',
     *//* androidClientId: '841504314870-8ho2kpsepohcj6gjfcklo00dihvpi9fe.apps.googleusercontent.com',
     iosClientId: '841504314870-9sal4mo70pqh5be6b8k1dkmfcrmgdumd.apps.googleusercontent.com',*//*
-    iosBundleId: 'com.fittyus',
+    iosBundleId: 'com.fittyus.online',
   );*/
 }

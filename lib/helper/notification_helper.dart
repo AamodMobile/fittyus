@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages, deprecated_member_use
+
 import 'dart:developer';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';

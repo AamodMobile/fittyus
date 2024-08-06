@@ -282,7 +282,7 @@ class _MyChallengesScreenState extends State<MyChallengesScreen> {
           ),
           const SizedBox(height: 9),
           list.paticipantPost!.isEmpty
-              ? Align(
+              ? const Align(
                   alignment: Alignment.center,
                   child: Text(
                     "No  Video",
@@ -342,7 +342,7 @@ class _MyChallengesScreenState extends State<MyChallengesScreen> {
                         }),
                   ),
                 ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
         ],

@@ -6,11 +6,10 @@ class MyButton extends StatefulWidget {
   final Color color;
 
   const MyButton(
-      {Key? key,
+      {super.key,
       required this.onPressed,
       required this.child,
-      required this.color})
-      : super(key: key);
+      required this.color});
 
   @override
   State<MyButton> createState() => _MyButtonState();

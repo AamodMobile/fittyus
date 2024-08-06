@@ -9,7 +9,6 @@ import 'package:fittyus/screens/training_session_details_screen.dart';
 import 'package:fittyus/services/api_logs.dart';
 import 'package:fittyus/services/api_url.dart';
 import 'package:fittyus/widgets/custom_calender.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 class TrainingSessionScreen extends StatefulWidget {
@@ -58,10 +57,10 @@ class _TrainingSessionScreenState extends State<TrainingSessionScreen> {
       init: Get.find<SessionListController>(),
       initState: (state) {
         if (cont.city.value == "") {
-          print("object");
+          Log.console("object");
           cont.getCheckInStatus();
         } else {
-          print("here");
+          Log.console("here");
           Get.find<SessionListController>().sessionListApi(date, city);
         }
       },

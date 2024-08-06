@@ -118,7 +118,7 @@ class UserController extends GetxController {
   Future<void> backOverOrEditProfile(String id) async {
     try {
       showProgress();
-      var response = await ApiServices.backOverAndProfileUpdate(image != null ? image.value.path : "", backCover != null ? backCover.value.path : "");
+      var response = await ApiServices.backOverAndProfileUpdate(image.value != File("") ? image.value.path : "", backCover.value != File("") ? backCover.value.path : "");
       if (response['status'] == true) {
         closeProgress();
         getProfile();

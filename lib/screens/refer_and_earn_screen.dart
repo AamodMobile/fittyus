@@ -208,7 +208,7 @@ class _ReferAndEarnScreenState extends State<ReferAndEarnScreen> {
                 onPressed: () async {
                   await Share.share(
                       'Fittyus App Download From Play Store Use Refer Code${referCode.text}:-'
-                      '\n https://play.google.com/store/apps/details?id=com.fittyus"');
+                      '\n https://play.google.com/store/apps/details?id=com.fittyus.online"');
                 },
                 color: pGreen,
                 child: Text(

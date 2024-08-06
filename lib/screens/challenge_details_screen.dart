@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -7,6 +9,7 @@ import 'package:fittyus/controller/user_controller.dart';
 import 'package:fittyus/screens/new_profile_screen.dart';
 import 'package:fittyus/screens/video_play_screen.dart';
 import 'package:fittyus/screens/web_view_.dart';
+import 'package:fittyus/services/api_logs.dart';
 import 'package:fittyus/services/api_url.dart';
 import 'package:fittyus/widgets/my_button.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -48,7 +51,7 @@ class _ChallengeDetailsScreenState extends State<ChallengeDetailsScreen> {
         thumbPath = thumbnailPath;
       });
     } catch (e) {
-      print('Error generating thumbnail: $e');
+      Log.console('Error generating thumbnail: $e');
     }
   }
 
@@ -279,7 +282,7 @@ class _ChallengeDetailsScreenState extends State<ChallengeDetailsScreen> {
                                 margin: const EdgeInsets.only(right: 10),
                                 width: 175,
                                 height: 115,
-                                padding: EdgeInsets.all(2),
+                                padding: const EdgeInsets.all(2),
                                 decoration: BoxDecoration(
                                   color: const Color(0xFFFFFFFF),
                                   border: Border.all(color: Colors.black),

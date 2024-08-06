@@ -39,7 +39,7 @@ class EditProfileController extends GetxController implements GetxService {
           radioButtonItem.toString(),
           occupation.text.toString(),
         pincode.text,
-          image != null ? image.value.path : "",
+          image.value != File("") ? image.value.path : "",
          );
       if (response['status'] == true) {
         closeProgress();

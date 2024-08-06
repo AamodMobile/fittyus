@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fittyus/constants/constants.dart';
 import 'package:fittyus/model/coupan_list_new.dart';
-import 'package:fittyus/model/coupon_model.dart';
 import 'package:fittyus/services/api_url.dart';
 
 class OfferDetailsScreen extends StatefulWidget {

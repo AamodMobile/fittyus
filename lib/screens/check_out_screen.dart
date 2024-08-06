@@ -435,7 +435,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                 ),
                                               ],
                                             )
-                                          : SizedBox(),
+                                          : const SizedBox(),
                                     ],
                                   ),
                                 ),

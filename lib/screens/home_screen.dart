@@ -1155,7 +1155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           InkWell(
                                                             onTap: () async {
                                                               await Share.share('Fittyus App Download From Play Store:-'
-                                                                  '\n https://play.google.com/store/apps/details?id=com.fittyus"');
+                                                                  '\n https://play.google.com/store/apps/details?id=com.fittyus.online"');
                                                             },
                                                             child: Container(
                                                               padding: const EdgeInsets.all(6),

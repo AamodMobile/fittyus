@@ -5,9 +5,6 @@ import 'package:fittyus/controller/community_controller.dart';
 import 'package:fittyus/controller/user_controller.dart';
 import 'package:fittyus/services/api_url.dart';
 import 'package:fittyus/widgets/my_button.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import '../widgets/text_filed_widget.dart';
 

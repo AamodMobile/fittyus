@@ -471,7 +471,7 @@ class _TrainingSessionDetailsScreenState
                   ],
                 ),
               ),
-              bottomSheet:contextCtrl.coachDetails == ""?SizedBox():
+              bottomSheet:contextCtrl.coachDetails == ""?const SizedBox():
                Container(
                 padding: const EdgeInsets.all(15),
                 width: MediaQuery.of(context).size.width,

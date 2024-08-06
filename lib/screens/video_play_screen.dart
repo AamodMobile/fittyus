@@ -4,6 +4,7 @@ import 'package:fittyus/widgets/video_item.dart';
 class VideoPlayScreen extends StatefulWidget {
   final String file;
   final int id;
+
   const VideoPlayScreen({super.key, required this.file, required this.id});
 
   @override
@@ -40,12 +41,7 @@ class _VideoPlayScreenState extends State<VideoPlayScreen> {
               ),
               Text(
                 "Video",
-                style: TextStyle(
-                    color: mainColor,
-                    fontFamily: semiBold,
-                    fontWeight: FontWeight.w500,
-                    fontStyle: FontStyle.normal,
-                    fontSize: Dimensions.font16),
+                style: TextStyle(color: mainColor, fontFamily: semiBold, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal, fontSize: Dimensions.font16),
               ),
             ],
           ),
@@ -53,11 +49,13 @@ class _VideoPlayScreenState extends State<VideoPlayScreen> {
         body: Column(
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height-100,
+              height: MediaQuery.of(context).size.height - 100,
               width: MediaQuery.of(context).size.width,
-              child: VideoPlayerItem(videoUrl: widget.file,
+              child: VideoPlayerItem(
+                videoUrl: widget.file,
                 isPaused: false,
-                videoId: widget.id,),
+                videoId: widget.id,
+              ),
             )
           ],
         ),

@@ -10,13 +10,13 @@ class VideoPlayerItem extends StatefulWidget {
   final int videoId;
   final VoidCallback? callback;
 
-  const VideoPlayerItem({Key? key, required this.videoUrl,
+  const VideoPlayerItem({super.key, required this.videoUrl,
     required this.isPaused,
     required this.videoId,
-    this.callback}) : super(key: key);
+    this.callback});
 
   @override
-   _VideoPlayerItemState createState() => _VideoPlayerItemState();
+  State<VideoPlayerItem> createState() => _VideoPlayerItemState();
 }
 
 class _VideoPlayerItemState extends State<VideoPlayerItem> {

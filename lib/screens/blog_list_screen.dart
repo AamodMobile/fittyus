@@ -4,7 +4,6 @@ import 'package:fittyus/controller/blog_list_controller.dart';
 import 'package:fittyus/model/blog_list_model.dart';
 import 'package:fittyus/screens/blog_details_screen.dart';
 import 'package:fittyus/services/api_url.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'comment_list_screen.dart';
@@ -336,7 +335,7 @@ class _BlogListScreenState extends State<BlogListScreen> {
                 InkWell(
                   onTap: () async {
                     await Share.share('Fittyus App Download From Play Store:-'
-                        '\n https://play.google.com/store/apps/details?id=com.fittyus"');
+                        '\n https://play.google.com/store/apps/details?id=com.fittyus.online"');
                   },
                   child: Container(
                     padding: const EdgeInsets.all(6),

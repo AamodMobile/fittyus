@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:fittyus/screens/dashboard_screenn.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:fittyus/constants/constants.dart';

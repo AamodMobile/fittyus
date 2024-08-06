@@ -4,7 +4,7 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 class WebViewScreen extends StatefulWidget {
   final String url;
 
-  const WebViewScreen({Key? key, required this.url}) : super(key: key);
+  const WebViewScreen({super.key, required this.url});
 
   @override
   State<WebViewScreen> createState() => _WebViewScreenState();

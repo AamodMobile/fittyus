@@ -1,9 +1,12 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fittyus/constants/constants.dart';
 import 'package:fittyus/controller/community_controller.dart';
 import 'package:fittyus/model/view_profile_model.dart';
+import 'package:fittyus/services/api_logs.dart';
 import 'package:fittyus/services/api_url.dart';
 import 'package:fittyus/widgets/text_filed_widget.dart';
 
@@ -538,7 +541,7 @@ class _AddCommunityScreenState extends State<AddCommunityScreen> {
                           }
                         } else {
                           if (postType == 0) {
-                            print("here");
+                            Log.console("here");
                             _controller
                                 .addCommunity(
                               _controller.tittleController.text,
@@ -552,7 +555,7 @@ class _AddCommunityScreenState extends State<AddCommunityScreen> {
                               _controller.desController.text = "";
                             });
                           } else {
-                            print("here2");
+                            Log.console("here2");
                             _controller
                                 .addCommunityAfterBefore(
                               _controller.tittleController.text,

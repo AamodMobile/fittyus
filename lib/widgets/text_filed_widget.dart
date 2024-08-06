@@ -22,7 +22,7 @@ class MyTextFormField extends StatefulWidget {
   final List<TextInputFormatter>? inputFormatters;
 
   const MyTextFormField(
-      {Key? key,
+      {super.key,
       required this.hint,
       this.suffixIcon,
       required this.obscureText,
@@ -41,8 +41,7 @@ class MyTextFormField extends StatefulWidget {
       this.inputFormatters,
         this.textInputAction,
       this.onTab,
-      required this.border})
-      : super(key: key);
+      required this.border});
 
   @override
   State<MyTextFormField> createState() => _MyTextFormFieldState();

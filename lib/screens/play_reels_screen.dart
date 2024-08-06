@@ -15,9 +15,9 @@ class PlayReelsScreen extends StatefulWidget {
   final int id;
 
   const PlayReelsScreen({
-    Key? key,
+    super.key,
     required this.id,
-  }) : super(key: key);
+  });
 
   @override
   State<PlayReelsScreen> createState() => _PlayReelsScreenState();

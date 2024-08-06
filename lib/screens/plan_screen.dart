@@ -5,7 +5,6 @@ import 'package:fittyus/constants/constants.dart';
 import 'package:fittyus/controller/coach_plan_details_controller.dart';
 import 'package:fittyus/services/api_url.dart';
 import 'package:fittyus/widgets/my_button.dart';
-import 'package:flutter/cupertino.dart';
 
 class PlanScreen extends StatefulWidget {
   final String coachId;
